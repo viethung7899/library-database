@@ -39,7 +39,7 @@ git pull
 
 ### How to collaborate
 
-1. Makee new branches
+1. Make new branches
 
     ```bash
     git checkout -b [your_branch_name]
