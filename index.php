@@ -8,6 +8,7 @@
 </head>
 <body>
   <h1>First page J</h1>
+  <h2>This is the subtitle</h2>
   <?php phpinfo(); ?> 
 </body>
 </html>
