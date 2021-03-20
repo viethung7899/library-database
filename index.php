@@ -7,7 +7,7 @@
   <title>First web site</title>
 </head>
 <body>
-  <h1>First page</h1>
+  <h1>First page J</h1>
   <?php phpinfo(); ?> 
 </body>
 </html>
