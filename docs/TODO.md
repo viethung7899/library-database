@@ -4,44 +4,44 @@
 
 ### Members
 
-- [] Register
-- [] Log in
-- [] Log out
-- [] Update member info
-- [] Search for books
-- [] Add books to make reservation
-- [] Show all books for reservation
-- [] Cancel reservation
-- [] Show borrowed books
-- [] Pay fines
-- [] Request for membership cancellation (only if they pay all the fines)
+- [ ] Register
+- [ ] Log in
+- [ ] Log out
+- [ ] Update member info
+- [ ] Search for books
+- [ ] Add books to make reservation
+- [ ] Show all books for reservation
+- [ ] Cancel reservation
+- [ ] Show borrowed books
+- [ ] Pay fines
+- [ ] Request for membership cancellation (only if they pay all the fines)
 
 ### Librarians
 
-- [] Log in
-- [] Log out
-- [] Add books
-- [] Remove books
-- [] Search books
-- [] Modify books' info
-- [] Show all reservation requests (pick up date is today)
-- [] Add record
-- [] Remove record
+- [ ] Log in
+- [ ] Log out
+- [ ] Add books
+- [ ] Remove books
+- [ ] Search books
+- [ ] Modify books' info
+- [ ] Show all reservation requests (pick up date is today)
+- [ ] Add record
+- [ ] Remove record
 
 ### Admin
 
-- [] Log in
-- [] Log out
-- [] Add employees
-- [] Modify employees' info
-- [] Remove employees
-- [] Total of borrowed book
-- [] Total of (un)paid fines
+- [ ] Log in
+- [ ] Log out
+- [ ] Add employees
+- [ ] Modify employees' info
+- [ ] Remove employees
+- [ ] Total of borrowed book
+- [ ] Total of (un)paid fines
 
 ## Optional features
 
-- [] Delete inactive members
-- [] Notify when the return date approaches
+- [ ] Delete inactive members
+- [ ] Notify when the return date approaches
 
 ## App flow
 
