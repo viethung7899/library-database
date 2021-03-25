@@ -23,7 +23,7 @@ class DatabaseMigration extends Database {
   // Get all the migrations which haven't applied to the database
   private function getToApplyMigrations() {
     $files = scandir($this->migrationDirectory);
-    $toApplyMigrations = array_diff($files, [...$this->getAppliedMigrations(), '.', '..']);
+    $toApplyMigrations = array_diff($files, [...$this->getAppliedMigrations(), '.', '..', '.DS_Store']);
     return $toApplyMigrations;
   }
 
