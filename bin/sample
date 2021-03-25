@@ -1,0 +1,13 @@
+<?php
+
+class MIGRATION_NAME {
+  public function up(\PDO $pdo) {
+    $query = "";
+    $pdo->exec($query);
+  }
+
+  public function down(\PDO $pdo) {
+    $query = "";
+    $pdo->exec($query);
+  }
+}
