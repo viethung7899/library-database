@@ -1,0 +1,17 @@
+{
+    "name": "nguyenviethung/login-test",
+    "authors": [
+        {
+            "name": "Viet Hung Nguyen",
+            "email": "vnguyen48@mylangara.ca"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    }
+}
