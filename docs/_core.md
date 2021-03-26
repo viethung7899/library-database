@@ -9,8 +9,8 @@
 `public static `**`verifyInput`**`(array $input, array $inputRules)`
 
 - Verifies the input before by cheking it against its rules
-  - `$input`: an assocative array storing input information, each elememt has the form of `$attribute => $value`
-  - `$inputRules`: an assocative array storing input rules, each element has the form of `$attribute => $rules`
+  - `$input`: an associative array storing input information, each elememt has the form of `$attribute => $value`
+  - `$inputRules`: an associative array storing input rules, each element has the form of `$attribute => $rules`
 
 ## `View`
 
@@ -33,7 +33,7 @@
 `public `**`loadParams`**`(array $params)`
 
 - Loads the data into the view
-  - `$params`: An assocative array storing data for the view, each element has the form of `$variableName => value`
+  - `$params`: An associative array storing data for the view, each element has the form of `$variableName => value`
 
 `public `**`render()`**
 
@@ -70,7 +70,7 @@
 
 `public static `**`body()`**
 
-- Returns the body of the incoming request as an assocative array
+- Returns the body of the incoming request as an associative array
 
 > **For example**: Suppose the incoming request destination is `http://example.com/edit/user?`**`id=1&name=John`**.
 > This method will return `['id' => 1, 'name' => 'John']`
@@ -79,7 +79,7 @@
 
 ### Attributes
 
-`public array `**`$content`**: An assocative array store the body of the response object
+`public array `**`$content`**: An associative array store the body of the response object
 
 `public OutputError `**`$errors`**: An object to store the error of the object
 
