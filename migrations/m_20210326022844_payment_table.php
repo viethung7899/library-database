@@ -6,9 +6,9 @@ class m_20210326022844_payment_table {
       payment_id VARCHAR(255) PRIMARY KEY,
       date DATE NOT NULL,
       paidAmount REAL NOT NULL,
-      paymentMethod VARCHAR(255) DEFAULT 'CASH'
+      paymentMethod VARCHAR(255) DEFAULT 'CASH',
       user_id VARCHAR(255),
-      FOREIGN KEY (user_id) REFERENCES user
+      FOREIGN KEY (user_id) REFERENCES user(user_id)
         ON DELETE SET NULL
     )";
     $pdo->exec($query);

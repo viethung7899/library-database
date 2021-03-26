@@ -7,7 +7,7 @@ class m_20210326020851_privilege_table {
       password VARCHAR(255),
       access_level INT NOT NULL,
       PRIMARY KEY (user_id, password),
-      FOREIGN KEY (user_id) REFERENCES user
+      FOREIGN KEY (user_id) REFERENCES user(user_id)
           ON DELETE CASCADE
     )";
     $pdo->exec($query);
