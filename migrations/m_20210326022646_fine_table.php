@@ -6,7 +6,7 @@ class m_20210326022646_fine_table {
       amount REAL,
       user_id VARCHAR(255),
       PRIMARY KEY (amount, user_id),
-      FOREIGN KEY (user_id) REFERENCES user
+      FOREIGN KEY (user_id) REFERENCES user(user_id)
     )";
     $pdo->exec($query);
   }
