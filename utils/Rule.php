@@ -2,9 +2,6 @@
 
 namespace app\utils;
 
-use OutputError;
-
-
 class Rule {
   const REQUIRED = 0;
   const MIN = 1;
