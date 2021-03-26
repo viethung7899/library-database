@@ -3,7 +3,6 @@
 use app\components\form\Field;
 use app\components\form\Form;
 use app\core\Request;
-use app\utils\Dumpster;
 
 $form = new Form('/register', Form::POST, Request::body(), $errors ?? []);
 $usernameField = $form->field('Username', 'username');

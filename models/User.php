@@ -28,9 +28,9 @@ class User extends Model {
   // Add new user to the system
   public static function register($data) {
     $response = new Response();
-    
+
     // Verify the input data
-    $errors = self::verifyInput($data, self::rules());
+    $response->errors = self::verifyInput($data, self::rules());
 
     // Verify the matching password
     if (
@@ -38,20 +38,18 @@ class User extends Model {
       && empty($errors['confirmPassword'] ?? '')
     ) {
       echo 'No match';
-      $errors->addError('confirmPassowrd', 'Passwords are not match');
+      $response->errors->addError('confirmPassowrd', 'Passwords are not match');
     }
 
     // Failed validation
-    if (!$errors->isEmpty()) {
-      $response->errors = $errors->content;
+    if (!$response->errors->isEmpty()) {
       return $response;
     }
 
     // Check for exisitng user
     $existing = self::findOneUserByUsername($data['username']);
     if (!empty($existing)) {
-      $errors->addError('username', 'Username already existed');
-      $response->errors = $errors->content;
+      $response->errors->addError('username', 'Username already existed');
       return $response;
     }
 

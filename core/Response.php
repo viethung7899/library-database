@@ -8,6 +8,10 @@ class Response {
   public array $content = [];
   public OutputError $errors;
 
+  public function __construct() {
+    $this->errors = new OutputError();
+  }
+
   public static function setStatusCode($code) {
     http_response_code($code);
   }

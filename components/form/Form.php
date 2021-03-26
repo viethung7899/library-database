@@ -28,7 +28,9 @@ class Form {
 
   public function field(string $title, string $attr) {
     $field = new Field($title, $attr);
-    $field->setData($this->data[$attr] ?? '', $this->error[$attr] ?? '');
+    $value = $this->data[$attr] ?? '';
+    $error = $this->errors[$attr] ?? '';
+    $field->setData($value, $error);
     return $field;
   }
 }
