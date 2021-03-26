@@ -11,13 +11,9 @@ To contribute to this project, read the instruction [here](docs/README.md)
 - Make sure you have `git` on the command line. Download it [here](https://git-scm.com/downloads)
 - XAMPP v7.4.14 or above
 - Make sure Apache and MySQL database are running
-- Make sure your version of PHP is 7.4.14 or above by running this command on your terminal
-  
-  ```bash
-  php -v
-  ```
+- Make sure PHP version 7.4.14 or above can run in the command line by running `php -v`
 
-### Step-by-step tutorial
+### Installation
 
 1. Navigate to the xampp installation directory
 
@@ -27,10 +23,21 @@ To contribute to this project, read the instruction [here](docs/README.md)
     git clone https://github.com/viethung7899/library-database
     ```
 
-3. Run this command
+3. Create new your new database in `PHPMyAdmin`
+
+4. Create file `.env` to configure your database according to `.env.example`
+
+5. Run these commands
 
     ```bash
-    php -S localhost:8080
+    # Install dependecies
+    php bin/composer update
+
+    # Migrate the database (creating table and populate data)
+    php migration.php
+
+    # Run the program
+    php -S localhost:8080 -t public
     ```
 
-4. The website is now running on `localhost:8080`
+6. The website is now running on `localhost:8080`
