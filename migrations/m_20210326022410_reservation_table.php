@@ -15,7 +15,7 @@ class m_20210326022410_reservation_table {
   }
 
   public function down(\PDO $pdo) {
-    $query = "";
+    $query = "DROP TABLE reservation";
     $pdo->exec($query);
   }
 }
