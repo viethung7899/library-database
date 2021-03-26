@@ -7,13 +7,14 @@ class m_20210326012047_book_table {
       title VARCHAR(255) NOT NULL,
       author VARCHAR(255) NOT NULL,
       publisher_id INT NOT NULL,
-      reserve_only VARCHAR(1) SET DEFAULT 'Y'
+      reserve_only VARCHAR(1) SET DEFAULT 'Y',
+      FOREIGN KEY (publisher_id) REFERENCES publisher(id)
     )";
     $pdo->exec($query);
   }
 
   public function down(\PDO $pdo) {
-    $query = "";
+    $query = "DROP TABLE book";
     $pdo->exec($query);
   }
 }
