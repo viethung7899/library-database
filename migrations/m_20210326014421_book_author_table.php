@@ -7,10 +7,6 @@ class m_20210326014421_book_author_table {
       author VARCHAR(255),
       category_id INT NOT NULL DEFAULT 0,
       PRIMARY KEY (title,author),
-      FOREIGN KEY (title) REFERENCES book(title)
-          ON DELETE CASCADE ON UPDATE CASCADE,
-      FOREIGN KEY (author) REFERENCES book(author)
-          ON DELETE CASCADE ON UPDATE CASCADE,
       FOREIGN KEY (category_id) REFERENCES category(id)    
     )";
     $pdo->exec($query);

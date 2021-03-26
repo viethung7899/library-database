@@ -9,11 +9,7 @@ class m_20210326015934_book_author_publisher_table {
       year INT NOT NULL,
       quantity INT DEFAULT 0,
       PRIMARY KEY (title, publisher_id, author),
-      FOREIGN KEY (title) REFERENCES book
-          ON DELETE CASCADE ON UPDATE CASCADE,
-      FOREIGN KEY (author) REFERENCES book
-          ON DELETE CASCADE ON UPDATE CASCADE,
-      FOREIGN KEY (publisher_id) REFERENCES book
+      FOREIGN KEY (publisher_id) REFERENCES publisher(id)
           ON DELETE CASCADE ON UPDATE CASCADE
     )";
     $pdo->exec($query);
