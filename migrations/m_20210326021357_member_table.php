@@ -6,7 +6,7 @@ class m_20210326021357_member_table {
       member_id VARCHAR(255) PRIMARY KEY,
       joining_date DATE NOT NULL,
       period INT DEFAULT 1,
-      FOREIGN KEY (member_id) REFERENCES library_staff(staff_id)
+      FOREIGN KEY (member_id) REFERENCES user(user_id)
           ON DELETE CASCADE
     )";
     $pdo->exec($query);

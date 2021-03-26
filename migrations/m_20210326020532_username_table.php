@@ -1,5 +1,6 @@
 <?php
 
+// May not to bee deleted
 class m_20210326020532_username_table {
   public function up(\PDO $pdo) {
     $query = "CREATE TABLE username (
