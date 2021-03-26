@@ -1,14 +1,15 @@
 <?php
 
-require_once '../vendor/autoload.php';
+// The root directory should be `libray-databse`
+$rootDir = dirname(__DIR__);
+
+require_once "$rootDir/vendor/autoload.php";
 
 use app\controllers\BaseController;
-use app\controllers\MemberController;
 use app\core\Application;
-use app\utils\Dumpster;
 
-// Configure the database
-$rootDir = dirname(__DIR__);
+// Configure the database and hide the crendential
+
 $dot_env = \Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dot_env->load();
 $config = [
@@ -21,10 +22,10 @@ $config = [
 $app = new Application($rootDir);
 $app->connectDatabase($config);
 
-// Include the route for /
-include_once '../routes/user.php';
+// Include all the routers for the app
+include_once "$rootDir/routes/user.php";
 
-// Configure the router
+// Adding more route to the app
 $app->get('/', [BaseController::class, 'home']);
 
 $app->run();

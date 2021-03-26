@@ -1,6 +1,53 @@
 # Namespace `\app\core`
 
-## `Requst`
+## `Model`
+
+`public static `**`getDatabase()`**
+
+- Returns the database instance coneecting to the app
+
+`public static `**`verifyInput`**`(array $input, array $inputRules)`
+
+- Verifies the input before by cheking it against its rules
+  - `$input`: an assocative array storing input information, each elememt has the form of `$attribute => $value`
+  - `$inputRules`: an assocative array storing input rules, each element has the form of `$attribute => $rules`
+
+## `View`
+
+`public `**`__construct`**`(string $view, string $layout)`
+
+- Constrtucts a view witth specific view template and layout
+
+`public `**`setLayout`**`(string $layout)`
+
+- Sets the layout for the view
+
+`public `**`setView`**`(string $view)`
+
+- Sets the template for the view
+
+`public `**`setTitle`**`(string $title)`
+
+- Sets the title for the view
+
+`public `**`loadParams`**`(array $params)`
+
+- Loads the data into the view
+  - `$params`: An assocative array storing data for the view, each element has the form of `$variableName => value`
+
+`public `**`render()`**
+
+- Renders the view to the website
+
+## `Controller`
+
+`public atatic `**`generateView`**`(string $view, string $title, string $layout)`
+
+- Constructs a view instance with a specific view template, a title, and a layout
+
+----
+
+## `Request`
 
 ### Methods
 
@@ -44,7 +91,7 @@
 
 `public `**`ok()`**
 
-- Returns errors if there is no error in the response
+- Returns true if there are no errors in the response
 
 `public static `**`redirect(string $path)`**
 
@@ -86,9 +133,9 @@
 
 - Connects the database with specific configuration
 
-`public `**`getDatabase`**`(array $config)`
+`public `**`getDatabase`**`()`
 
-- Returns the database with specific configuration
+- Returns the database instance coneecting to the app
 
 `public static `**`getApp()`**
 
