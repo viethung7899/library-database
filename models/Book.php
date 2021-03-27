@@ -36,17 +36,36 @@ class Book extends Model
         //RETURN
       }
     }
-    $authenticatePublisher = self::getDatabase()->prepare("SELECT * FROM publisher WHERE publisherId = {$data['$publisherId']}");
-    if (!$authenticatePublisher->execute()) {
+    //cheeck if publisher is in publisher table
+    $authenticatePublisher = self::getDatabase()->prepare("SELECT * FROM publisher WHERE publisherId = $data[publisherId]");
+    $authenticatePublisher->execute();
+    $publishers = $authenticatePublisher->fetchAll();
+    if (!$publishers) {
       //ADD PUBLISHER OR ERROR MESSAGE
     }
-    $authenticateCategory = self::getDatabase()->prepare("SELECT * FROM category WHERE categoryId = {$data['$categoryId']}");
-    if (!$authenticateCategory->execute()) {
+    //check if category is in category table
+    $authenticateCategory = self::getDatabase()->prepare("SELECT * FROM category WHERE categoryId = $data[categoryId]");
+    $authenticateCategory->execute();
+    $categories = $authenticateCategory->fetchAll();
+    if (!$categories) {
       //ADD CATEGORY OR ERROR MESSAGE
     }
+    $authenticateBookAuthor = self::getDatabase()->prepare("SELECT * FROM book_author WHERE title = $data[title] AND author = $data[author]");
+    $authenticateBookAuthor->execute();
+    $BookAuthor = $authenticateBookAuthor->fetchAll();
+    if (!$BookAuthor) {
+      //ADD BOOK_AUTHOR OR ERROR MESSAGE
+    }
+    $authenticateBookAuthorPublisher = self::getDatabase()->prepare("SELECT * FROM book_author WHERE title = $data[title] AND author = $data[author] AND publisher = $data[publisher]");
+    $authenticateBookAuthorPublisher->execute();
+    $BookAuthorPublisher = $authenticateBookAuthorPublisher->fetchAll();
+    if (!$BookAuthorPublisher) {
+      //ADD BOOK_AUTHOR_PUBLISHER OR ERROR MESSAGE
+    }
     $into = "isbn, title, author, pusblisherId, year, categoryId, quantity, reserveOnly";
-    $query = self::getDatabase()->prepare("INSERT INTO book (" . $into . ") VALUES ({$data['isbn']}, {$data['$title']}, {$data['$author']}, {$data['$publisherId']}, {$data['$year']}, {$data['$categoryId']}, {$data['$quantity']}, {$data['$reserveOnly']})");
+    $query = self::getDatabase()->prepare("INSERT INTO book (" . $into . ") VALUES ($data[isbn], $data[title], $data[author], $data[publisherId], $data[year], $data[categoryId], $data[quantity], $data[reserveOnly])");
     $query->execute();
+    return $query->fetchAll();
   }
 
   public static function deleteBook(string $isbn)
