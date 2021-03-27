@@ -12,7 +12,9 @@ class Book extends Model {
   }
 
   public static function searchBooksByAuthor(string $keyword) {
-    
+    $query = self::getDatabase()->prepare("SELECT * FROM book WHERE author LIKE '%$keyword%'");
+    $query->execute();
+    return $query->fetchAll();
   }
 
   public static function getBookByISBN(string $isbn) {
