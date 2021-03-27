@@ -155,4 +155,16 @@
 
 `public `**`prepare`**`(array $query)`
 
-- Prepare the query and return the PDO statment object
+- Return the prepared query before execution
+- How to use it
+
+  ```php
+  // Prepare the query, 
+  $statement = $db->prepare($query);
+
+  // Execute the query
+  $statement->execute();
+
+  // Return all the query result as an associative array
+  $result = $statement->fetchAll();
+  ```
