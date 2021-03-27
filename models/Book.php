@@ -18,7 +18,9 @@ class Book extends Model {
   }
 
   public static function getBookByISBN(string $isbn) {
-
+    $query = self::getDatabase()->prepare("SELECT * FROM book WHERE isbn = $isbn");
+    $query->execute();
+    return $query->fetchAll();
   }
 
   public static function addBook($data) {
