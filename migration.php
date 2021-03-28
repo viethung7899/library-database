@@ -1,6 +1,11 @@
 <?php
 
-// Migration script for the database
+// This script is only for developer use only
+
+/**
+ * Configure the database, create new one if not exists
+ */
+
 use app\core\DatabaseMigration;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -10,7 +15,7 @@ $dot_env->load();
 
 // Database config and hide the credentials
 $config = [
-    'dsn' => 'mysql:host='.$_ENV['DB_HOST'].';port='.$_ENV['DB_PORT'].';dbname='.$_ENV['DB_NAME'],
+    'dsn' => 'mysql:host='.$_ENV['DB_HOST'].';port='.$_ENV['DB_PORT'],
     'username' => $_ENV['DB_USERNAME'],
     'password' => $_ENV['DB_PASSWORD'],
 ];
@@ -18,6 +23,15 @@ $config = [
 $migrationDirectory = __DIR__.'/migrations';
 
 $migration = new DatabaseMigration($config, $migrationDirectory);
+$dbName = '`'.$_ENV['DB_NAME'].'`';
+
+// Create database if not exsists
+$migration->query("CREATE DATABASE IF NOT EXISTS $dbName");
+$migration->query("use $dbName");
+
+/**
+ * Starting migration script
+ */
 
 $MAKE = '--make';
 $UP = '--up';
@@ -48,6 +62,7 @@ function help() {
   echo "    $UP                       Update one migration\n";
   echo "    $DOWN                     Rollback the recent migration\n";
   echo "    $NOW                      Get the latest migration\n\n";
+  echo "    --help                    Get the manual\n\n";
   exit(1);
 }
 
