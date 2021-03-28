@@ -17,8 +17,14 @@ class Database {
     $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
   }
 
-  // Prepare the query before execution
+  // Return a prepared array before execution
   public function prepare(string $query) {
     return $this->pdo->prepare($query);
+  }
+
+  // Execute a query directly
+  // Note: prone to SQL injection if using query with dynamic data
+  public function query(string $query) {
+    return $this->pdo->query($query);
   }
 }
