@@ -6,7 +6,7 @@ class m_20210326015358_user_table {
       user_id INT AUTO_INCREMENT PRIMARY KEY,
       username VARCHAR(255) UNIQUE NOT NULL,
       name VARCHAR(255) NOT NULL,
-      phone_number INT NOT NULL
+      phone_number INT DEFAULT NULL
     )";
     $pdo->exec($query);
   }

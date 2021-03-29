@@ -4,18 +4,34 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Member;
 use app\models\User;
-use app\utils\Dumpster;
 
 class MemberController extends BaseController {
   // Make the rules of the 
 
   // Overide the login function
   public static function login() {
+    $body = Request::body();
     $view = self::generateView('login', 'Log in');
-    // Call login function from ab
+    // Call login function from
+    if (Request::isPost()) {
+      // If sucessful, redirect to home page
+      $response = User::login($body);
+      
+      // If successful, redirect to the home
+      if ($response->ok()) {
+        Response::redirect('/');
+        return;
+      }
+      
+      $params = [
+        'body' => $response->content,
+        'errors' => $response->errors
+      ];
+      $view->loadParameters($params);
+    }
 
-    // If successful, redirect to the home
 
     // Render the login page (with errors if possible)
     $view->render();
@@ -28,9 +44,10 @@ class MemberController extends BaseController {
     
     if (Request::isPost()) {
       // If sucessful, redirect to home page
-      $response = User::register($body);
+      $response = Member::register($body);
       if ($response->ok()) {
         Response::redirect('/');
+        return;
       }
       $params = [
         'body' => $response->content,

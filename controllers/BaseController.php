@@ -16,9 +16,7 @@ class BaseController extends Controller {
     $view->render();
   }
 
-  protected static function login() {
-    // Resolve post login
-  }
+  protected static function login() {}
 
   // Can access without login
   public static function searchBook() {
