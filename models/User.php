@@ -64,7 +64,7 @@ class User extends Model {
     $errors = self::verifyInput($data, self::rules());
 
     // Failed valiadtion
-    if (!$errors->isEmpty()) {
+    if (!$errors->ok()) {
       $response->errors = $errors;
       return $response;
     }
