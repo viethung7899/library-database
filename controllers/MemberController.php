@@ -17,7 +17,7 @@ class MemberController extends BaseController {
     // Call login function from
     if (Request::isPost()) {
       // If sucessful, redirect to home page
-      $response = User::login($body);
+      $response = Member::login($body);
       
       // If successful, redirect to the home
       if ($response->ok()) {

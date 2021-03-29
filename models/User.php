@@ -48,7 +48,7 @@ class User extends Model {
     }
 
     // Check for exisitng user
-    $existing = self::findOneUserByUsername($data['username']);
+    $existing = self::findOneByUsername($data['username']);
     if (!empty($existing)) {
       $response->addError('username', 'Username already existed');
       return $response;
@@ -70,7 +70,7 @@ class User extends Model {
       return $response;
     }
 
-    $result = self::findOneUserByUsername($data['username']);
+    $result = self::findOneByUsername($data['username']);
 
     // Check if the username exists
     if (empty($result)) {
@@ -87,8 +87,24 @@ class User extends Model {
     return $response;
   }
 
-  protected static function findOneUserByUsername(string $username) {
+  protected static function findOneByUsername(string $username) {
     $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE username = :u LIMIT 1');
+    $statement->bindValue(':u', $username);
+    $statement->execute();
+    return $statement->fetchAll();
+  }
+
+  protected static function findOneById(int $id) {
+    $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE user_id = :id LIMIT 1');
+    $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+    $statement->execute();
+    return $statement->fetchAll();
+  }
+
+  protected static function findOneInfoByUsername(string $username) {
+    $statement = self::getDatabase()->prepare('SELECT u.user_id, p.password, p.access_level 
+      FROM user u JOIN previlege p ON u.user_id = p.user_id 
+      WHERE u.username = :u');
     $statement->bindValue(':u', $username);
     $statement->execute();
     return $statement->fetchAll();

@@ -4,8 +4,8 @@
 
 ### Members
 
-- [ ] Register
-- [ ] Log in
+- [x] Register
+- [x] Log in
 - [ ] Log out
 - [ ] Update member info
 - [ ] Search for books
@@ -27,16 +27,16 @@
 - [ ] Show all reservation requests (pick up date is today)
 - [ ] Add record
 - [ ] Remove record
+- [ ] Total of borrowed book
+- [ ] Total of (un)paid fines
 
 ### Admin
 
 - [ ] Log in
 - [ ] Log out
-- [ ] Add employees
+- [x] Add employees
 - [ ] Modify employees' info
 - [ ] Remove employees
-- [ ] Total of borrowed book
-- [ ] Total of (un)paid fines
 
 ## Optional features
 
