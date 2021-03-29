@@ -12,12 +12,13 @@ class MemberController extends BaseController {
 
   // Overide the login function
   public static function login() {
-    // Call login function
-    parent::login();
+    $view = self::generateView('login', 'Log in');
+    // Call login function from ab
 
     // If successful, redirect to the home
 
     // Render the login page (with errors if possible)
+    $view->render();
   }
 
   public static function register() {

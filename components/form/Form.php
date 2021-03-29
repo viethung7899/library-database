@@ -19,15 +19,15 @@ class Form {
   }
 
   public function begin() {
-    return sprintf('<form action="%s" method="%s" autocomplete="off">', $this->action, $this->method);
+    echo sprintf('<form action="%s" method="%s" autocomplete="off">', $this->action, $this->method);
   }
 
   public function end() {
-    return '</form>';
+    echo '</form>';
   }
 
-  public function field(string $title, string $attr) {
-    $field = new Field($title, $attr);
+  public function field(string $title, string $attr, string $type = Field::TEXT) {
+    $field = new Field($title, $attr, $type);
     $value = $this->data[$attr] ?? '';
     $error = $this->errors[$attr] ?? '';
     $field->setData($value, $error);

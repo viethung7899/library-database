@@ -2,39 +2,36 @@
 
 namespace app\components\form;
 
-class Field {
+use app\core\Component;
+
+class Field extends Component {
   const TEXT = 'text';
   const PASSWORD = 'password';
 
-  private string $label = '';
-  private string $attr = '';
-  private string $value = '';
-  private string $error = '';
-
-  public function __construct(string $label, string $name) {
-    $this->label = $label;
-    $this->attr = $name;
+  public function __construct(string $label, string $name, string $type = self::TEXT) {
+    parent::__construct(
+      ['label' => $label,'name' => $name, 'type' => $type]);
   }
 
   public function setData(string $value, string $error) {
-    $this->value = $value;
-    $this->error = $error;
+    $this->state['value'] = $value;
+    $this->state['error'] = $error;
   }
 
-  public function render(string $type = self::TEXT) {
-    return sprintf(
+  public function render() {
+    echo sprintf(
       '<div class="mb-3">
         <label class="form-label">%s</label>
         %s
         <div class="invalid-feedback">%s</div>
       </div>',
-      $this->label,
-      $this->renderInputOnly($type),
-      $this->error
+      $this->state['label'],
+      $this->generateInputOnly(),
+      $this->state['error']
     );
   }
 
-  public function renderInputOnly(string $type = self::TEXT) {
+  public function generateInputOnly() {
     return sprintf(
       '<input 
       type="%s" 
@@ -42,10 +39,10 @@ class Field {
       value="%s" 
       autocomplete="off"
       class="form-control %s">',
-      $type,
-      $this->attr,
-      $this->value,
-      empty($this->error) ? '' : 'is-invalid'
+      $this->state['type'],
+      $this->state['name'],
+      $this->state['value'],
+      !isset($this->state['error']) || empty($this->state['error']) ? '' : 'is-invalid'
     );
   }
 }

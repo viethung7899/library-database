@@ -4,10 +4,9 @@ use app\components\form\Field;
 use app\components\form\Form;
 use app\core\Request;
 
-$form = new Form('/register', Form::POST, Request::body(), $errors ?? []);
+$form = new Form('/login', Form::POST, Request::body(), $errors ?? []);
 $usernameField = $form->field('Username', 'username');
 $passwordField = $form->field('Password', 'password', Field::PASSWORD);
-$confirmPasswordField = $form->field('Confirm password', 'confirmPassword', Field::PASSWORD);
 
 ?>
 
@@ -16,7 +15,6 @@ $confirmPasswordField = $form->field('Confirm password', 'confirmPassword', Fiel
 <?php $form->begin(); ?>
   <?php $usernameField->render() ?>
   <?php $passwordField->render() ?>
-  <?php $confirmPasswordField->render() ?>
-  <p>Already a member? <a href="/login">Log in</a></p>
+  <p>Not a member? <a href="/register">Register</a></p>
   <button type="submit" class="my-2 btn btn-primary">Register</button>
 <?php $form->end(); ?>
