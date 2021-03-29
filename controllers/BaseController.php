@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 use app\core\Controller;
+use app\models\User;
+use app\core\Request;
+use app\core\Response;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -18,6 +21,14 @@ class BaseController extends Controller {
 
   protected static function login() {
     // Resolve post login
+    $body = Request::body();
+
+    if (Request::isPost()) {
+      $response = User::login($body);
+      if ($response->ok()) {
+        Response::redirect('/');
+      }
+    }
   }
 
   // Can access without login
