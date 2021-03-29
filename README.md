@@ -23,21 +23,19 @@ To contribute to this project, read the instruction [here](docs/README.md)
     git clone https://github.com/viethung7899/library-database
     ```
 
-3. Create new your new database in `PHPMyAdmin`
+3. Copy file `.env.example` into a new file `.env` annd configure yoyr database by changing your `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`
 
-4. Create file `.env` to configure your database according to `.env.example`
-
-5. Run these commands
+4. Run these commands
 
     ```bash
     # Install dependecies
     php bin/composer update
 
-    # Migrate the database (creating table and populate data)
+    # Migrate the database (creating database, table, and then populate data)
     php migration.php
 
     # Run the program
     php -S localhost:8080 -t public
     ```
 
-6. The website is now running on `localhost:8080`
+5. The website is now running on `localhost:8080`
