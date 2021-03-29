@@ -5,6 +5,7 @@ use app\core\Controller;
 use app\models\User;
 use app\core\Request;
 use app\core\Response;
+use app\models\Book;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -25,19 +26,26 @@ class BaseController extends Controller {
 
     if (Request::isPost()) {
       $response = User::login($body);
-      if ($response->ok()) {
-        Response::redirect('/');
-      }
     }
+
+    return $response;
   }
 
   // Can access without login
   public static function searchBook() {
     // Resolve book search
-
+    $body = Request::body();
+    if (isset($body)) {
+      $response = Book::searchBooksByName($body);
     // If successful, print the result
-
+      if ($response->ok()) {
+        
+      }
     // Else, show the error on the form
+      else {
+        
+      }
+    }
   }
 
   // Get books details
