@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 use app\core\Controller;
+use app\core\Request;
+use app\models\User;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -18,12 +20,20 @@ class BaseController extends Controller {
 
   protected static function login() {
     // Resolve post login
+    $body = Request::body();
+
+    if (Request::isPost()) {
+      $response = User::login($body);
+      if ($response->ok()) {
+        Response::redirect('/');
+      }
+    }
   }
 
   // Can access without login
   public static function searchBook() {
     // Resolve book search
-
+    
     // If successful, print the result
 
     // Else, show the error on the form

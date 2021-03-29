@@ -9,6 +9,7 @@ class AdminController extends BaseController {
     parent::login();
 
     // Check credientials
+    
 
     // If successful, redirect to the admin page
 

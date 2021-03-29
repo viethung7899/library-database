@@ -70,6 +70,9 @@ class Book extends Model
 
   public static function deleteBook(string $isbn)
   {
+    $query = self::getDatabase()->prepare("DELETE FROM book WHERE isbn = :isbn");
+    $query->bindValue(':isbn', $isbn);
+    $query->execute();
   }
 
   public static function modifyBook($data)
