@@ -23,7 +23,7 @@ To contribute to this project, read the instruction [here](docs/README.md)
     git clone https://github.com/viethung7899/library-database
     ```
 
-3. Copy file `.env.example` into a new file `.env` annd configure yoyr database by changing your `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`
+3. Copy file `.env.example` into a new file `.env` annd configure your database by changing your `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`
 
 4. Run these commands
 
