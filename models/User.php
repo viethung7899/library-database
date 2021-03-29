@@ -26,6 +26,7 @@ class User extends Model {
   }
 
   // Add new user to the system
+  // $data is an array having the field of username, password, confirmPassword
   public static function register($data) {
     $response = new Response();
 
@@ -38,18 +39,18 @@ class User extends Model {
       && empty($errors['confirmPassword'] ?? '')
     ) {
       echo 'No match';
-      $response->errors->addError('confirmPassowrd', 'Passwords are not match');
+      $response->addError('confirmPassowrd', 'Passwords are not match');
     }
 
     // Failed validation
-    if (!$response->errors->isEmpty()) {
+    if (!$response->ok()) {
       return $response;
     }
 
     // Check for exisitng user
     $existing = self::findOneUserByUsername($data['username']);
     if (!empty($existing)) {
-      $response->errors->addError('username', 'Username already existed');
+      $response->addError('username', 'Username already existed');
       return $response;
     }
 
@@ -57,14 +58,14 @@ class User extends Model {
     return $response;
   }
 
-  // Find one user in the system
+  // $data is an array having the field of username, password
   public static function login($data) {
     $response = new Response();
     $errors = self::verifyInput($data, self::rules());
 
     // Failed valiadtion
-    if (!$errors->isEmpty()) {
-      $response->errors = $errors->content;
+    if (!$errors->ok()) {
+      $response->errors = $errors;
       return $response;
     }
 
@@ -73,7 +74,7 @@ class User extends Model {
     // Check if the username exists
     if (empty($result)) {
       $errors->addError('username', 'Username not found');
-      $response->errors = $errors->content;
+      $response->errors = $errors;
       return $response;
     }
 
@@ -81,7 +82,7 @@ class User extends Model {
     $hashPassword = $result[0]['hash_password'];
     if (password_verify($data['password'], $hashPassword)) {
       $errors->addError('password', 'Wrong password');
-      $response->errors = $errors->content;
+      $response->errors = $errors;
     }
 
     return $response;

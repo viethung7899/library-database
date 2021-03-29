@@ -3,7 +3,7 @@
 class m_20210326022410_reservation_table {
   public function up(\PDO $pdo) {
     $query = "CREATE TABLE reservation (
-      user_id VARCHAR(255),
+      user_id INT,
       isbn VARCHAR(255),
       pickupDate DATE NOT NULL,
       PRIMARY KEY (user_id, isbn),

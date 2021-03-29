@@ -8,6 +8,9 @@ class Rule {
   const MAX = 2;
 
   // Verify the rules
+  // $rule is an array with more than one element
+  // 1st elememt: Rule name
+  // 2nd element onward: rule attributes
   public static function verify($value, $rule) {
     switch ($rule[0]) {
       case self::REQUIRED:

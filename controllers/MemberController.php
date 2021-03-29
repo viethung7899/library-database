@@ -33,7 +33,7 @@ class MemberController extends BaseController {
       }
       $params = [
         'body' => $response->content,
-        'errors' => $response->errors->content
+        'errors' => $response->errors
       ];
       $view->loadParameters($params);
     }

@@ -8,9 +8,11 @@ class Model {
     return Application::getApp()->getDatabase();
   }
 
+  protected static function rules() {}
+
   // Verify the input of the database
   protected static function verifyInput($data, $rules) {
-    $error = new \app\utils\OutputError();
+    $error = new Response();
     foreach($data as $attr => $value) {
       if (isset($rules[$attr])) {
         foreach ($rules[$attr] as $rule) {

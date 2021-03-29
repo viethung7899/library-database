@@ -4,8 +4,8 @@ class m_20210326015934_book_author_publisher_table {
   public function up(\PDO $pdo) {
     $query = "CREATE TABLE book_author_publisher (
       title VARCHAR(255),
-      publisher_id INT,
       author VARCHAR(255),
+      publisher_id INT,
       year INT NOT NULL,
       quantity INT DEFAULT 0,
       PRIMARY KEY (title, publisher_id, author),
