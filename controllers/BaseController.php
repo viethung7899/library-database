@@ -29,9 +29,13 @@ class BaseController extends Controller {
   public static function searchBook() {
     $view = self::generateView('searchBook', 'Book search', 'withNavigation');
     // Resolve book search
-
+    $body = Request::body();
+    if (isset($body)) {
+      $response = Book::searchBooksByName($body);
     // If successful, print the result
-
+      if ($response->ok()) {
+        
+      }
     // Else, show the error on the form
     $view->render();
   }
