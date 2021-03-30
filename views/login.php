@@ -16,5 +16,6 @@ $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
   <?php $usernameField->render() ?>
   <?php $passwordField->render() ?>
   <p>Not a member? <a href="/register">Register</a></p>
+  <p>Are you an employee? <a href="/library/login">Login here</a></p>
   <button type="submit" class="my-2 btn btn-primary">Log in</button>
 <?php $form->end(); ?>

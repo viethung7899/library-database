@@ -15,11 +15,14 @@ $bookField = $form->field('Searching...', 'name', false);
     <?php $bookField->render() ?>
     <button class="btn btn-outline-primary" type="submit">Search</button>
   </div>
+  
   <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="by" value="title">
+    <input class="form-check-input" type="radio" name="by" value="title" checked>
     <label class="form-check-label">By title</label>
+  </div>
+  
   <div class="form-check form-check-inline">
   <input class="form-check-input" type="radio" name="by" value="title">
     <label class="form-check-label">By author</label>
-</div>
+  </div>
 <?php $form->end(); ?>

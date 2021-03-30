@@ -44,7 +44,7 @@ class BaseController extends Controller {
     $session = self::getSession();
     $session->set('id', $response->content['id']);
     $session->set('name', $response->content['name']);
-    $session->set('level', $response->content['level']);
+    $session->set('level', $response->content['level'] ?? 0);
   }
 
   public static function isAuthenticated() {

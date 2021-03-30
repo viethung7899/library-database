@@ -6,7 +6,7 @@
 
 - [x] Register
 - [x] Log in
-- [ ] Log out
+- [x] Log out
 - [ ] Update member info
 - [ ] Search for books
 - [ ] Add books to make reservation
@@ -18,7 +18,7 @@
 
 ### Librarians
 
-- [ ] Log in
+- [x] Log in
 - [ ] Log out
 - [ ] Add books
 - [ ] Remove books
@@ -32,7 +32,7 @@
 
 ### Admin
 
-- [ ] Log in
+- [x] Log in
 - [ ] Log out
 - [x] Add employees
 - [ ] Modify employees' info
