@@ -17,4 +17,4 @@ $librarianRoute->get('/book/add', [LibrarianController::class, 'addBook']);
 $librarianRoute->post('/book/add', [LibrarianController::class, 'addBook']);
 
 // To the add page
-$librarianRoute->post('/book/delete', [LibrarianController::class, 'login']);
+$librarianRoute->get('/reservation', [LibrarianController::class, 'reservation']);

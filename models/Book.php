@@ -109,6 +109,6 @@ class Book extends Model {
 
   // Doing the cascade delete for book
   public static function deleteBook(string $isbn) {
-    
+    $query = self::getDatabase()->prepare("DELETE FROM book WHERE isbn = ");
   }
 }

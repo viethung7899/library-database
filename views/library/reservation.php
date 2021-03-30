@@ -2,9 +2,9 @@
 
 use app\controllers\BaseController;
 use app\components\form\Form;
-use app\models\Book;
+use app\models\Reservation;
 
-$model = $book ?? new Book();
+$model = $body['reservation'] ?? new Reservation();
 
 $form = new Form('/library/reservation', Form::GET, $model, $errors ?? []);
 $idField = $form->field('ID', 'user_id');
@@ -17,23 +17,24 @@ $titleField = $form->field('Book title', 'title');
 <h1 class="my-5">Search reservations</h1>
 
 <?php $form->begin(); ?>
-<div class="input-group mb-3">
-  <?php $bookField->render() ?>
-  <button class="btn btn-outline-primary" type="submit">Search</button>
+<button class="btn btn-outline-primary mb-3" type="submit">Search</button>
+<div class="row">
+  <div class="col-md mb-3">
+    <?php $isbnField->render(); ?>
+  </div>
+  <div class="col-md mb-3">
+    <?php $titleField->render(); ?>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md mb-3">
+    <?php $idField->render(); ?>
+  </div>
+  <div class="col-md mb-3">
+    <?php $nameField->render(); ?>
+  </div>
 </div>
 <?php $form->end(); ?>
-
-<div id="search-by" class="mb-3">
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="by" value="title" checked>
-    <label class="form-check-label">By title</label>
-  </div>
-
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="by" value="author">
-    <label class="form-check-label">By author</label>
-  </div>
-</div>
 
 <table class="table table-striped table-hover">
   <thead>
@@ -42,23 +43,19 @@ $titleField = $form->field('Book title', 'title');
       <th scope="col">Name</th>
       <th scope="col">ISBN</th>
       <th scope="col">Title</th>
-      <th scope="col">Reservation date</th>
       <th scope="col">Pickup date</th>
-
-      <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
-        <th></th>
-      <?php endif; ?>
+      <th></th>
     </tr>
   </thead>
-  <?php $books = $body['books'] ?? [];
-  foreach ($books as $book) :
-  ?>
+  <?php $reservations = $body['reverations'] ?? [];
+        foreach ($reservations as $r) :
+        ?>
     <tr>
-      <th scope="row"><?php echo $book->isbn; ?></th>
-      <td><?php echo $book->title; ?></td>
-      <td><?php echo $book->author; ?></td>
-      <td><?php echo $book->publisher_name; ?></td>
-      <td><?php echo $book->year; ?></td>
+      <th scope="row"><?php echo $r->user_id; ?></th>
+      <td><?php echo $r->name; ?></td>
+      <td><?php echo $r->isbn; ?></td>
+      <td><?php echo $r->title; ?></td>
+      <td><?php echo $r->pickupDate; ?></td>
       <td><?php echo $book->quantity; ?></td>
       <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
         <th>
@@ -68,14 +65,3 @@ $titleField = $form->field('Book title', 'title');
       <?php endif; ?>
     </tr>
   <?php endforeach; ?>
-
-  <script>
-    // A small script to change
-    const field = document.querySelector('.form-control');
-    const radio = document.querySelector('#search-by');
-
-    radio.addEventListener('change', (e) => {
-      field.name = e.target.value;
-      field.placeholder = 'Search by ' + e.target.value + '...';
-    })
-  </script>

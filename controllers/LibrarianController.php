@@ -6,6 +6,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Book;
 use app\models\Category;
+use app\models\Reservation;
 use app\utils\Dumpster;
 
 class LibrarianController extends BaseController {
@@ -59,6 +60,20 @@ class LibrarianController extends BaseController {
       $response->content['book'] = $book;
     }
     $response->content['categories'] = Category::getAllCategory();
+    self::loadResponseToView($view, $response);
+    $view->render();
+  }
+
+  public static function reservation() {
+    $view = self::generateView('library/reservation', 'Reservations');
+    $body = Request::body();
+    $response = new Response();
+    if (!empty($body)) {
+      $reservation = new Reservation(true);
+      $response->content['reservation'] = $reservation;
+      $response->content['reservations'] = Reservation::getAllRervations($reservation);
+      Dumpster::dump($response->content['reservations']);
+    }
     self::loadResponseToView($view, $response);
     $view->render();
   }
