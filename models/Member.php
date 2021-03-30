@@ -2,22 +2,21 @@
 namespace app\models;
 
 class Member extends User {
-  public static function register($data) {
-    $response = parent::register($data);
+  public function register() {
+    $response = parent::register();
     if ($response->ok()) {
-      $response->content['name'] = $data['name'];
-      $id = $response->content['id'];
       // Add to the privilege
-      $hash = password_hash($data['password'], PASSWORD_DEFAULT);
-      Privilege::addPrevilege($id, $hash);
+      $hash = password_hash($this->password, PASSWORD_DEFAULT);
+      Privilege::addPrevilege($this->user_id, $hash);
 
       // Add to the member table
-      self::addMember($id);
+      self::addMember($this->user_id);
     }
 
     return $response;
   }
 
+  // Static method for interating with Member table
   public static function addMember(int $id, int $period = 1) {
     $statement = self::getDatabase()->prepare("INSERT INTO member (member_id, period) VALUES (:id, :period)");
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);

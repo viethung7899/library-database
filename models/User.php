@@ -42,15 +42,12 @@ class User extends Model {
 
   // Add new user to the system
   // $data is an array having the field of username, password, confirmPassword
-  public static function register($data) {
+  public function register() {
     // Verify the input data
-    $response = self::verifyInput($data, self::rules());
+    $response = $this->verifyInput();
 
     // Verify the matching password
-    if (
-      $data['password'] !== $data['confirmPassword']
-      && empty($errors['confirmPassword'] ?? '')
-    ) {
+    if ($this->password !== $this->confirmPassword) {
       $response->addError('confirmPassword', 'Passwords are not match');
     }
 
@@ -60,15 +57,16 @@ class User extends Model {
     }
 
     // Check for exisitng user
-    $existing = self::findOneByUsername($data['username']);
+    $existing = self::findOneInfoByUsername($this->username);
     if (!empty($existing)) {
       $response->addError('username', 'Username already existed');
       return $response;
     }
 
-    // Add new user
-    $id = self::addNewUser($data['name'], $data['username']);
-    $response->content['id'] = $id;
+    // Adding new user to User table
+    $id = self::addNewUser($this->name, $this->username);
+    $this->user_id = $id;
+    $response->content['user'] = $this;
 
     return $response;
   }
@@ -100,13 +98,6 @@ class User extends Model {
     }
 
     return $response;
-  }
-
-  protected static function findOneByUsername(string $username) {
-    $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE username = :u LIMIT 1');
-    $statement->bindValue(':u', $username);
-    $statement->execute();
-    return $statement->fetchAll();
   }
 
   protected static function findOneById(int $id) {

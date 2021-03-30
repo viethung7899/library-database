@@ -48,7 +48,8 @@ class MemberController extends BaseController {
     
     if (Request::isPost()) {
       // If sucessful, redirect to home page
-      $response = Member::register($body);
+      $member = new Member();
+      $response = $member->register();
       if ($response->ok()) {
         self::setSession($response);
         Response::redirect('/');
