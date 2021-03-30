@@ -69,10 +69,18 @@ class Category extends Model
     return $query->fetchAll();
   }
 
-  public static function checkForCategory($cName)
+  public static function checkForCategoryWithName($cName)
   {
     $authenticateCategory = self::getDatabase()->prepare("SELECT * FROM category WHERE cName = :n ");
     $authenticateCategory->bindValue(':n', $cName);
+    $authenticateCategory->execute();
+    $categories = $authenticateCategory->fetchAll();
+    return $categories;
+  }
+  public static function checkForCategoryWithId($catId)
+  {
+    $authenticateCategory = self::getDatabase()->prepare("SELECT * FROM category WHERE categoryId = :i ");
+    $authenticateCategory->bindValue(':i', $catId);
     $authenticateCategory->execute();
     $categories = $authenticateCategory->fetchAll();
     return $categories;
