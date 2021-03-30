@@ -3,6 +3,11 @@
 namespace app\controllers;
 
 class LibrarianController extends BaseController {
+  public static function home() {
+    $view = self::generateView('library/index', 'Home', 'withNavigation');
+    $view->render();
+  }
+
   // Overide the login function
   public static function login() {
     // Call login function

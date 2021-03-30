@@ -24,8 +24,10 @@ $app->connectDatabase($config);
 
 // Include all the routers for the app
 include_once "$rootDir/routes/user.php";
+include_once "$rootDir/routes/library.php";
 
 // Adding more route to the app
 $app->get('/', [BaseController::class, 'home']);
+$app->get('/search', [BaseController::class, 'searchBook']);
 
 $app->run();

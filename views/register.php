@@ -12,7 +12,7 @@ $confirmPasswordField = $form->field('Confirm password', 'confirmPassword', Fiel
 
 ?>
 
-<h1>Register</h1>
+<h1 class="my-5">Become new member</h1>
 
 <?php $form->begin(); ?>
   <?php $nameField->render() ?>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\core\Application;
 use app\core\Request;
 use app\core\Response;
 use app\models\Member;
@@ -12,15 +13,15 @@ class MemberController extends BaseController {
 
   // Overide the login function
   public static function login() {
-    $body = Request::body();
-    $view = self::generateView('login', 'Log in');
+    $view = self::generateView('login', 'Log in', 'withNavigation');
     // Call login function from
-    if (Request::isPost()) {
-      // If sucessful, redirect to home page
-      $response = Member::login($body);
+    if (Request::isPost()) {   
+      $response = parent::login();   
       
       // If successful, redirect to the home
       if ($response->ok()) {
+        // Set session here
+        self::setSession($response);
         Response::redirect('/');
         return;
       }
@@ -40,12 +41,13 @@ class MemberController extends BaseController {
   public static function register() {
     // Resolve the register POST reequest
     $body = Request::body();
-    $view = self::generateView('register', 'Register');
+    $view = self::generateView('register', 'Register', 'withNavigation');
     
     if (Request::isPost()) {
       // If sucessful, redirect to home page
       $response = Member::register($body);
       if ($response->ok()) {
+        self::setSession($response);
         Response::redirect('/');
         return;
       }

@@ -38,8 +38,7 @@ class User extends Model {
       $data['password'] !== $data['confirmPassword']
       && empty($errors['confirmPassword'] ?? '')
     ) {
-      echo 'No match';
-      $response->addError('confirmPassowrd', 'Passwords are not match');
+      $response->addError('confirmPassword', 'Passwords are not match');
     }
 
     // Failed validation
@@ -70,7 +69,7 @@ class User extends Model {
       return $response;
     }
 
-    $result = self::findOneByUsername($data['username']);
+    $result = self::findOneInfoByUsername($data['username']);
 
     // Check if the username exists
     if (empty($result)) {
@@ -79,9 +78,13 @@ class User extends Model {
     }
 
     // Check if the password is valid
-    $hashPassword = $result[0]['hash_password'];
-    if (password_verify($data['password'], $hashPassword)) {
+    $hashPassword = $result[0]['password'];
+    if (!password_verify($data['password'], $hashPassword)) {
       $response->addError('password', 'Wrong password');
+    } else {
+      // Set out the content
+      $response->content['id'] = $result[0]['user_id'];
+      $response->content['name'] = $result[0]['name'];
     }
 
     return $response;
@@ -102,8 +105,8 @@ class User extends Model {
   }
 
   protected static function findOneInfoByUsername(string $username) {
-    $statement = self::getDatabase()->prepare('SELECT u.user_id, p.password, p.access_level 
-      FROM user u JOIN previlege p ON u.user_id = p.user_id 
+    $statement = self::getDatabase()->prepare('SELECT u.user_id, u.name, p.password, p.access_level 
+      FROM user u JOIN privilege p ON u.user_id = p.user_id 
       WHERE u.username = :u');
     $statement->bindValue(':u', $username);
     $statement->execute();

@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 use app\core\Controller;
+use app\core\Response;
+use app\core\Request;
+use app\models\User;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -16,15 +19,21 @@ class BaseController extends Controller {
     $view->render();
   }
 
-  protected static function login() {}
+  // Only return the response, not the view itself, the view should be handle by its subclass
+  protected static function login() {
+    $body = Request::body();
+    return User::login($body);
+  }
 
   // Can access without login
   public static function searchBook() {
+    $view = self::generateView('searchBook', 'Book search', 'withNavigation');
     // Resolve book search
 
     // If successful, print the result
 
     // Else, show the error on the form
+    $view->render();
   }
 
   // Get books details
@@ -41,5 +50,16 @@ class BaseController extends Controller {
     // Validate old password
 
     // Change into new password
-  } 
+  }
+
+  protected static function setSession(Response $response) {
+    $session = self::getSession();
+    $session->set('id', $response->content['id']);
+    $session->set('name', $response->content['name']);
+    $session->set('level', $response->content['level']);
+  }
+
+  protected static function isAuthenticated() {
+    return self::getSession()->get('id');
+  }
 }

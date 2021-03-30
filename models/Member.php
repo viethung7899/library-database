@@ -5,6 +5,7 @@ class Member extends User {
   public static function register($data) {
     $response = parent::register($data);
     if ($response->ok()) {
+      $response->content['name'] = $data['name'];
       $id = $response->content['id'];
       // Add to the privilege
       $hash = password_hash($data['password'], PASSWORD_DEFAULT);
