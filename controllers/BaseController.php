@@ -16,7 +16,20 @@ class BaseController extends Controller {
   const ADMIN = 2;
 
   // Render the home page, can access without login
-  protected static function home() {}
+  protected static function home() {
+    // Redirect if the user already login
+    $level = self::getSession()->get('level');
+    if ($level == self::LIBRARIAN) {
+      Response::redirect('/library');
+      return true;
+    }
+
+    if ($level == self::ADMIN) {
+      Response::redirect('/admin');
+      return true;
+    }
+    return false;
+  }
 
   public static function notFound() {
     $view = self::generateView('notFound', 'Home');

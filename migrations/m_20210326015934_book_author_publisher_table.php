@@ -7,7 +7,6 @@ class m_20210326015934_book_author_publisher_table {
       author VARCHAR(255),
       publisher_id INT,
       year INT NOT NULL,
-      quantity INT DEFAULT 0,
       PRIMARY KEY (title, publisher_id, author),
       FOREIGN KEY (publisher_id) REFERENCES publisher(id)
           ON DELETE CASCADE ON UPDATE CASCADE

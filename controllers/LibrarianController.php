@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Book;
+use app\models\Category;
 use app\utils\Dumpster;
 
 class LibrarianController extends BaseController {
@@ -47,18 +49,29 @@ class LibrarianController extends BaseController {
     $view->render();
   }
 
+  // Add books
   public static function addBook() {
+    $view = self::generateView('library/addBook', 'Add book');
+    $response = new Response();
+    if (Request::isPost()) {
+      $book = new Book();
+      $response = $book->add();
+    }
+    $response->content['categories'] = Category::getAllCategory();
+    self::loadResponseToView($view, $response);
+    $view->render();
   }
 
-  public static function editBook() {
-  }
-
+  // Delete books
   public static function deleteBook() {
+
   }
 
   public static function confirmReservation() {
+
   }
 
   public static function confirmBorrow() {
+
   }
 }

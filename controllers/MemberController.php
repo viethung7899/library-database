@@ -9,6 +9,10 @@ use app\models\Member;
 class MemberController extends BaseController {
   // Member home page
   public static function home() {
+    // Set up redirection
+    $redirect = parent::home();
+    if ($redirect) return;
+    
     // Not authenticated -> return to the search page
     if (!self::isAuthenticated()) {
       Response::redirect('/search');
