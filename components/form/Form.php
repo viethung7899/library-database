@@ -26,11 +26,12 @@ class Form {
     echo '</form>';
   }
 
-  public function field(string $title, string $attr, string $type = Field::TEXT) {
+  public function field(string $title, string $attr, bool $showLabel = true, string $type = Field::TEXT) {
     $field = new Field($title, $attr, $type);
     $value = $this->data[$attr] ?? '';
     $error = $this->errors[$attr] ?? '';
     $field->setData($value, $error);
+    if ($showLabel) $field->showLabel();
     return $field;
   }
 }

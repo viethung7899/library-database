@@ -1,3 +1,10 @@
+<?php 
+
+use app\controllers\BaseController; 
+use app\core\Application;
+
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Library Database</a>
@@ -13,10 +20,19 @@
           <a class="nav-link" href="/search">Search</a>
         </li>
       </ul>
+      <?php if (!BaseController::isAuthenticated()): ?>
       <div class="d-flex">
         <a class="btn btn-primary mx-2" type="submit" role="button" href="/login">Login</a>
         <a class="btn btn-outline-primary" type="submit" role="button" href="/register">Register</a>
       </div>
+      <?php else: ?>
+      <div class="d-flex">
+        <a class="btn btn-link mx-2" type="submit" role="button" href="/profile">
+          <?php echo Application::getApp()->getSession()->get('name'); ?>
+        </a>
+        <a class="btn btn-outline-primary" type="submit" role="button" href="/logout">Logout</a>
+      </div>
+      <?php endif ?>
     </div>
   </div>
 </nav>
