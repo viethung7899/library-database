@@ -81,5 +81,8 @@ class Book_Author_Publisher extends Model
     if (!Book_Author::checkForAuthor($data['author'] && Book_Author::checkForTitle($data['title']))) {
       Book_Author::addBook_Author($data);
     }
+    if (!Publisher::checkForPublisher($data)) {
+      Publisher::addPublisher($data);
+    }
   }
 }
