@@ -71,4 +71,16 @@ class MemberController extends BaseController {
     // Render the register page
     $view->render();
   }
+
+  public static function searchBook() {
+    parent::searchBook();
+  }
+
+  public static function updateMemberInfo() {
+    $view = self::generateView('updateMemberInfo', 'Update member Info', 'withNavigation');
+  }
+
+  public static function makeReservation() {
+
+  }
 }
