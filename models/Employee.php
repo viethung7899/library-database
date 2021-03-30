@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\core\Response;
-use app\utils\Dumpster;
 
 class Employee extends User {
   public string $role;

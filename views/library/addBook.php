@@ -10,7 +10,7 @@ $form = new Form('/library/book/add', Form::POST, $model, $errors ?? []);
 $isnbField = $form->field('ISBN', 'isbn');
 $titleField = $form->field('Title', 'title');
 $authorField = $form->field('Author', 'author');
-$publisherField = $form->field('Publisher', 'publisher');
+$publisherField = $form->field('Publisher', 'publisher_name');
 $quantityField = $form->field('Quantity', 'quantity');
 $yearField = $form->field('Year', 'year');
 

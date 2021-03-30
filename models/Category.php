@@ -4,8 +4,7 @@ namespace app\models;
 
 use app\core\Model;
 
-class Category extends Model
-{
+class Category extends Model {
   public int $id;
   public string $name;
 

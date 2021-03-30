@@ -54,8 +54,9 @@ class LibrarianController extends BaseController {
     $view = self::generateView('library/addBook', 'Add book');
     $response = new Response();
     if (Request::isPost()) {
-      $book = new Book();
+      $book = new Book(true);
       $response = $book->add();
+      $response->content['book'] = $book;
     }
     $response->content['categories'] = Category::getAllCategory();
     self::loadResponseToView($view, $response);
