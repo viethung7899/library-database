@@ -16,7 +16,13 @@ class AdminController extends BaseController {
   }
 
   public static function addEmployee() {
+    $view = self::generateView('admin/addEmployee', 'Add new employee', 'admin');
+    $view->render();
+  }
 
+  public static function searchEmployee() {
+    $view = self::generateView('admin/searchEmployee', 'Search employee', 'admin');
+    $view->render();
   }
 
   public static function editEmployee() {

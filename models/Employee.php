@@ -3,8 +3,6 @@
 namespace app\models;
 
 class Employee extends User {
-  // Employee login
-
   // Register an employee
   public static function register($data) {
     $response = parent::register($data);

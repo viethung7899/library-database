@@ -11,12 +11,13 @@
   <title><?php echo $title; ?></title>
 </head>
 <body>
-  <?php
+<?php
   
   use app\core\Application;
-  include_once Application::getRootDir().'/components/_navbar.php';
+  include_once Application::getRootDir().'/components/_adminNavbar.php';
 
   ?>
+
   <!-- This is the content -->
   <div class="container">
     <?php echo $content; ?>
