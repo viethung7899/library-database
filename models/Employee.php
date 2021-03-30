@@ -20,7 +20,7 @@ class Employee extends User {
   }
 
   // Insert into an employee table
-  protected static function addEmployee(int $id, string $role, int $supervisor_id) {
+  protected static function addEmployee(int $id, string $role, ?int $supervisor_id = NULL) {
     $statement = self::getDatabase()->prepare("INSERT INTO member (staff_id, role, supervisor_id) VALUES (:id, :role, :sid)");
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);
     $statement->bindValue(':role', $role);

@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\core\Request;
 use app\core\Response;
+use app\utils\Dumpster;
 
 class AdminController extends BaseController {
   public static function home() {
@@ -17,6 +19,9 @@ class AdminController extends BaseController {
 
   public static function addEmployee() {
     $view = self::generateView('admin/addEmployee', 'Add new employee', 'admin');
+    if (Request::isPost()) {
+      Dumpster::dumpAll($_POST);
+    }
     $view->render();
   }
 

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Controller;
 use app\core\Response;
 use app\core\Request;
+use app\core\View;
 use app\models\User;
 
 // This controller is interacting with the User model
@@ -24,23 +25,25 @@ class BaseController extends Controller {
   // Only return the response, not the view itself, the view should be handle by its subclass
   protected static function login() {
     $body = Request::body();
-    return User::login($body);
+    $user = new User();
+    return $user->login($body);
   }
 
   // Can access without login
   public static function searchBook() {
     $view = self::generateView('searchBook', 'Book search', 'withNavigation');
     // Resolve book search
-    $body = Request::body();
     // Else, show the error on the form
     $view->render();
   }
 
+  // Only call after login method
   protected static function setSession(Response $response) {
     $session = self::getSession();
-    $session->set('id', $response->content['id']);
-    $session->set('name', $response->content['name']);
-    $session->set('level', $response->content['level'] ?? 0);
+    $user = $response->content['user'];
+    $session->set('id', $user->user_id);
+    $session->set('name', $user->name);
+    $session->set('level', $user->access_level);
   }
 
   public static function isAuthenticated(int $level = self::MEMBER) {
@@ -55,5 +58,14 @@ class BaseController extends Controller {
     self::getSession()->reset();
     Response::redirect('/search');
     return;
+  }
+
+  public static function loadResponseToView(View $view, Response $response) {
+    $params = [
+      'body' => $response->content,
+      'errors' => $response->errors
+    ];
+    
+    $view->loadParameters($params);
   }
 }

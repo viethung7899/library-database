@@ -11,17 +11,25 @@ class Model {
   protected static function rules() {}
 
   // Verify the input of the database
-  protected static function verifyInput($data, $rules) {
+  protected function verifyInput() {
+    $rules = $this->rules();
     $error = new Response();
-    foreach($data as $attr => $value) {
-      if (isset($rules[$attr])) {
-        foreach ($rules[$attr] as $rule) {
+    foreach($this as $key => $value) {
+      if (isset($rules[$key])) {
+        foreach ($rules[$key] as $rule) {
           $mess = \app\utils\Rule::verify($value, $rule);
-          $error->addError($attr, $mess);
+          $error->addError($key, $mess);
         }
       }
     }
 
     return $error;
+  }
+
+  public function loadDataFromRequest() {
+    $body = Request::body();
+    foreach ($body as $key => $value) {
+      $this->{$key} = $value;
+    } 
   }
 }

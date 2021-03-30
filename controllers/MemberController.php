@@ -2,12 +2,9 @@
 
 namespace app\controllers;
 
-use app\core\Application;
 use app\core\Request;
 use app\core\Response;
 use app\models\Member;
-use app\models\User;
-use app\utils\Dumpster;
 
 class MemberController extends BaseController {
   // Member home page
@@ -36,11 +33,7 @@ class MemberController extends BaseController {
         return;
       }
       
-      $params = [
-        'body' => $response->content,
-        'errors' => $response->errors
-      ];
-      $view->loadParameters($params);
+      self::loadResponseToView($view, $response);
     }
 
 
@@ -61,11 +54,8 @@ class MemberController extends BaseController {
         Response::redirect('/');
         return;
       }
-      $params = [
-        'body' => $response->content,
-        'errors' => $response->errors
-      ];
-      $view->loadParameters($params);
+
+      self::loadResponseToView($view, $response);
     }
 
     // Render the register page

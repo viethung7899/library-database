@@ -3,9 +3,18 @@
 namespace app\models;
 
 use app\core\Model;
+use app\utils\Dumpster;
 use app\utils\Rule;
 
 class User extends Model {
+  public ?int $user_id;
+  public ?string $name;
+  public ?string $username;
+  protected ?string $password;
+  protected ?string $confirmPassword;
+  protected ?string $hash_password;
+  public ?int $access_level;
+
   protected static function rules() {
     return [
       'name' => [
@@ -25,6 +34,10 @@ class User extends Model {
         [Rule::REQUIRED]
       ]
     ];
+  }
+
+  public function __construct() {
+    $this->loadDataFromRequest();
   }
 
   // Add new user to the system
@@ -61,15 +74,15 @@ class User extends Model {
   }
 
   // $data is an array having the field of username, password
-  public static function login($data) {
-    $response = self::verifyInput($data, self::rules());
+  public function login() {
+    $response = $this->verifyInput();
 
     // Failed valiadtion
     if (!$response->ok()) {
       return $response;
     }
 
-    $result = self::findOneInfoByUsername($data['username']);
+    $result = self::findOneInfoByUsername($this->username);
 
     // Check if the username exists
     if (empty($result)) {
@@ -78,14 +91,12 @@ class User extends Model {
     }
 
     // Check if the password is valid
-    $hashPassword = $result[0]['password'];
-    if (!password_verify($data['password'], $hashPassword)) {
+    $hashPassword = $result[0]->hash_password;
+    if (!password_verify($this->password, $hashPassword)) {
       $response->addError('password', 'Wrong password');
     } else {
       // Set out the content
-      $response->content['id'] = $result[0]['user_id'];
-      $response->content['name'] = $result[0]['name'];
-      $response->content['level'] = $result[0]['access_level'] ?? 0;
+      $response->content['user'] = $result[0];
     }
 
     return $response;
@@ -106,12 +117,12 @@ class User extends Model {
   }
 
   protected static function findOneInfoByUsername(string $username) {
-    $statement = self::getDatabase()->prepare('SELECT u.user_id, u.name, p.password, p.access_level 
+    $statement = self::getDatabase()->prepare('SELECT u.user_id, u.name, p.hash_password, p.access_level 
       FROM user u JOIN privilege p ON u.user_id = p.user_id 
       WHERE u.username = :u');
     $statement->bindValue(':u', $username);
     $statement->execute();
-    return $statement->fetchAll();
+    return $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
   }
 
   // Return last inserted id when adding new user

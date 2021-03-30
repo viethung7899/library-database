@@ -22,32 +22,26 @@ class LibrarianController extends BaseController {
     // Call login function
     $view = self::generateView('employeeLogin', 'Employee portal', 'withNavigation');
 
-    // Check credientials
+    // Check credientials and redirect to suitable route
     if (Request::isPost()) {
       $response = parent::login();
-      Dumpster::dumpAll($response);
-      $level = $response->content['level'] ?? 0;
-      
-      if ($level == 1 && $response->ok()) {
-        // If successful, redirect to the librarians page
-        self::setSession($response);
-        Response::redirect('/library');
-        return;
-      } else if ($level == 2 && $response->ok()) {
-        // If successful, redirect to the admin page
-        self::setSession($response);
-        Response::redirect('/admin');
-        return;
-      } else {
-        $response->addError('username', 'You do not have access');
+
+      if ($response->ok()) {
+        $level = $response->content['user']->access_level;
+        if ($level > 0) {
+          self::setSession($response);
+          if ($level == 1) {
+            Response::redirect('/library');
+          } else {
+            Response::redirect('/admin');
+          }
+          return;
+        } else {
+          $response->addError('username', 'You cannot access to the portal');
+        }
       }
-
-      $params = [
-        'errors' => $response->errors
-      ];
-      $view->loadParameters($params);
+      self::loadResponseToView($view, $response);
     }
-
     // Render the login page (with errors if possible)
     $view->render();
   }
