@@ -12,7 +12,7 @@ class m_20210329042252_book_author_publisher_data {
   }
 
   public function down(\PDO $pdo) {
-    $query = "DELETE FROM ";
+    $query = "DELETE FROM book_author_publisher";
     $pdo->exec($query);
   }
 }

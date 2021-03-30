@@ -7,9 +7,19 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Member;
 use app\models\User;
+use app\utils\Dumpster;
 
 class MemberController extends BaseController {
-  // Make the rules of the 
+  // Member home page
+  public static function home() {
+    // Not authenticated -> return to the search page
+    if (!self::isAuthenticated()) {
+      Response::redirect('/search');
+      return;
+    }
+    $view = self::generateView('index', 'Home', 'withNavigation');
+    $view->render();
+  }
 
   // Overide the login function
   public static function login() {

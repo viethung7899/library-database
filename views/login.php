@@ -13,9 +13,13 @@ $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
 <h1 class="my-5">Log in</h1>
 
 <?php $form->begin(); ?>
-  <?php $usernameField->render() ?>
-  <?php $passwordField->render() ?>
+<div class="mb-3">
+    <?php $usernameField->render() ?>
+  </div>
+  <div class="mb-3">
+    <?php $passwordField->render() ?>
+  </div>
   <p>Not a member? <a href="/register">Register</a></p>
-  <p>Are you an employee? <a href="/library/login">Login here</a></p>
+  <p>Are you an employee? <a href="/library/login">Log in here</a></p>
   <button type="submit" class="my-2 btn btn-primary">Log in</button>
 <?php $form->end(); ?>

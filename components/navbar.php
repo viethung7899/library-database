@@ -20,7 +20,7 @@ use app\core\Application;
           <a class="nav-link" href="/search">Search</a>
         </li>
       </ul>
-      <?php if (!BaseController::isAuthenticated()): ?>
+      <?php if (!BaseController::isLogin()): ?>
       <div class="d-flex">
         <a class="btn btn-primary mx-2" type="submit" role="button" href="/login">Login</a>
         <a class="btn btn-outline-primary" type="submit" role="button" href="/register">Register</a>

@@ -20,21 +20,10 @@ $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
     <?php $passwordField->render() ?>
   </div>
   <div class="my-2">
-    <p>Not an employee? <a href="/login">Login here</a></p>
+    <p>Not an employee? <a href="/login">Log in here</a></p>
   </div>
   
   <div class="my-1">
-  <div>Which role are you in?</div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="level" value="1" checked>
-      <label class="form-check-label">Librarian</label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="level" value="2">
-      <label class="form-check-label">Adminstrator</label>
-    </div>
-    
     <div>
       <button type="submit" class="my-2 btn btn-primary">Log in</button>
     </div>

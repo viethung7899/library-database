@@ -4,9 +4,15 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\utils\Dumpster;
 
 class LibrarianController extends BaseController {
   public static function home() {
+    // Not authenticated -> return to the search page
+    if (!self::isAuthenticated(self::LIBRARIAN)) {
+      Response::redirect('/library/login');
+      return;
+    }
     $view = self::generateView('library/index', 'Home', 'withNavigation');
     $view->render();
   }
@@ -15,17 +21,20 @@ class LibrarianController extends BaseController {
   public static function login() {
     // Call login function
     $view = self::generateView('employeeLogin', 'Employee portal', 'withNavigation');
-    $body = Request::body();
 
     // Check credientials
     if (Request::isPost()) {
       $response = parent::login();
+      Dumpster::dumpAll($response);
       $level = $response->content['level'] ?? 0;
+      
       if ($level == 1 && $response->ok()) {
+        // If successful, redirect to the librarians page
         self::setSession($response);
         Response::redirect('/library');
         return;
       } else if ($level == 2 && $response->ok()) {
+        // If successful, redirect to the admin page
         self::setSession($response);
         Response::redirect('/admin');
         return;
@@ -38,8 +47,6 @@ class LibrarianController extends BaseController {
       ];
       $view->loadParameters($params);
     }
-
-    // If successful, redirect to the librarians page
 
     // Render the login page (with errors if possible)
     $view->render();

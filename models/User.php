@@ -13,12 +13,12 @@ class User extends Model {
       ],
       'username' => [
         [Rule::REQUIRED],
-        [Rule::MIN, 6],
+        [Rule::MIN, 5],
         [Rule::MAX, 20],
       ],
       'password' => [
         [Rule::REQUIRED],
-        [Rule::MIN, 6],
+        [Rule::MIN, 5],
         [Rule::MAX, 20],
       ],
       'confirmPassword' => [
@@ -85,6 +85,7 @@ class User extends Model {
       // Set out the content
       $response->content['id'] = $result[0]['user_id'];
       $response->content['name'] = $result[0]['name'];
+      $response->content['level'] = $result[0]['access_level'] ?? 0;
     }
 
     return $response;

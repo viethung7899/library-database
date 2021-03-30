@@ -9,16 +9,12 @@ use app\models\User;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
+  const MEMBER = 0;
+  const LIBRARIAN = 1;
+  const ADMIN = 2;
+
   // Render the home page, can access without login
-  public static function home() {
-    if (!self::isAuthenticated()) {
-      // Redirect to search
-      Response::redirect('/search');
-      return;
-    }
-    $view = self::generateView('index', 'Home', 'withNavigation');
-    $view->render();
-  }
+  protected static function home() {}
 
   public static function notFound() {
     $view = self::generateView('notFound', 'Home', 'withNavigation');
@@ -47,16 +43,12 @@ class BaseController extends Controller {
     $session->set('level', $response->content['level'] ?? 0);
   }
 
-  public static function isAuthenticated() {
-    return self::getSession()->get('id');
+  public static function isAuthenticated(int $level = self::MEMBER) {
+    return self::isLogin() && self::getSession()->get('level') == $level;
   }
 
-  public static function protectedRoute() {
-    if (!self::isAuthenticated()) {
-      Response::redirect('/search');
-      return true;
-    }
-    return false;
+  public static function isLogin() {
+    return self::getSession()->get('id');
   }
 
   public static function logout() {
