@@ -4,7 +4,8 @@ namespace app\models;
 
 use app\core\Model;
 
-class Book extends Model
+include 'Category.php';
+class Book_Author extends Model
 {
   public $title;
   public $author;
