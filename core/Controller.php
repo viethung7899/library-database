@@ -4,6 +4,10 @@ namespace app\core;
 
 class Controller {
   // Generate the view with specific view template and layout template
+  protected static function getSession() {
+    return Application::getApp()->getSession();
+  }
+
   public static function generateView(string $view, string $title = 'Document', string $layout = 'base') {
     $view = new View($view, $layout);
     $view->setTitle($title);

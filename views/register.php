@@ -5,17 +5,20 @@ use app\components\form\Form;
 use app\core\Request;
 
 $form = new Form('/register', Form::POST, Request::body(), $errors ?? []);
+$nameField = $form->field('Name', 'name');
 $usernameField = $form->field('Username', 'username');
-$passwordField = $form->field('Password', 'password');
-$confirmPasswordField = $form->field('Confirm password', 'confirmPassword');
+$passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
+$confirmPasswordField = $form->field('Confirm password', 'confirmPassword', true, Field::PASSWORD);
 
 ?>
 
-<h1>Register</h1>
+<h1 class="my-5">Become new member</h1>
 
-<?php echo $form->begin(); ?>
-  <?php echo $usernameField->render() ?>
-  <?php echo $passwordField->render(Field::PASSWORD) ?>
-  <?php echo $confirmPasswordField->render(Field::PASSWORD) ?>
+<?php $form->begin(); ?>
+  <?php $nameField->render() ?>
+  <?php $usernameField->render() ?>
+  <?php $passwordField->render() ?>
+  <?php $confirmPasswordField->render() ?>
+  <p>Already a member? <a href="/login">Log in</a></p>
   <button type="submit" class="my-2 btn btn-primary">Register</button>
-<?php echo $form->end(); ?>
+<?php $form->end(); ?>

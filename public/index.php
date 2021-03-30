@@ -6,6 +6,7 @@ $rootDir = dirname(__DIR__);
 require_once "$rootDir/vendor/autoload.php";
 
 use app\controllers\BaseController;
+use app\controllers\MemberController;
 use app\core\Application;
 
 // Configure the database and hide the crendential
@@ -24,8 +25,11 @@ $app->connectDatabase($config);
 
 // Include all the routers for the app
 include_once "$rootDir/routes/user.php";
+include_once "$rootDir/routes/library.php";
+include_once "$rootDir/routes/admin.php";
 
 // Adding more route to the app
-$app->get('/', [BaseController::class, 'home']);
+$app->get('/', [MemberController::class, 'home']);
+$app->get('/search', [BaseController::class, 'searchBook']);
 
 $app->run();

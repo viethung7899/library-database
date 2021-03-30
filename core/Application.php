@@ -8,6 +8,7 @@ class Application extends Router {
   private static Application $app;
   private static string $ROOT_DIR;
   private Database $db;
+  private Session $session;
 
   // Contruct the app with the root
   public function __construct(string $rootDir) {
@@ -15,6 +16,7 @@ class Application extends Router {
     self::$app = $this;
     self::$ROOT_DIR = $rootDir;
     self::$routes = [];
+    $this->session = new Session();
   }
 
   // Connect the app with the databse
@@ -26,6 +28,11 @@ class Application extends Router {
   // Get the databse instance of the app
   public function getDatabase() {
     return self::$app->db;
+  }
+
+  // Get the databse instance of the app
+  public function getSession() {
+    return self::$app->session;
   }
 
   // Get the app instance

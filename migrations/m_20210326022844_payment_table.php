@@ -4,7 +4,7 @@ class m_20210326022844_payment_table {
   public function up(\PDO $pdo) {
     $query = "CREATE TABLE payment (
       payment_id VARCHAR(255) PRIMARY KEY,
-      date DATE NOT NULL,
+      date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       paidAmount REAL NOT NULL,
       paymentMethod VARCHAR(255) DEFAULT 'CASH',
       user_id INT,

@@ -44,6 +44,6 @@ class View {
     
     // Render content with the layout
     $title = $this->title ?? 'Home';
-    include_once Application::getRootDir()."/views/layout/".$this->layout.".php";
+    include_once Application::getRootDir()."/views/_layout/".$this->layout.".php";
   }
 }

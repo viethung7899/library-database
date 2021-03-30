@@ -2,17 +2,17 @@
 
 namespace app\controllers;
 
+use app\core\Response;
+
 class AdminController extends BaseController {
-  // Overide the login function
-  public static function login() {
-    // Call login function
-    parent::login();
-
-    // Check credientials
-
-    // If successful, redirect to the admin page
-
-    // Render the login page (with errors if possible)
+  public static function home() {
+    // Not authenticated -> return to the search page
+    if (!self::isAuthenticated(self::ADMIN)) {
+      Response::redirect('/library/login');
+      return;
+    }
+    $view = self::generateView('admin/index', 'Home', 'withNavigation');
+    $view->render();
   }
 
   public static function addEmployee() {

@@ -2,50 +2,47 @@
 
 namespace app\components\form;
 
-class Field {
+use app\core\Component;
+
+class Field extends Component {
   const TEXT = 'text';
   const PASSWORD = 'password';
+  private bool $label = false;
 
-  private string $label = '';
-  private string $attr = '';
-  private string $value = '';
-  private string $error = '';
-
-  public function __construct(string $label, string $name) {
-    $this->label = $label;
-    $this->attr = $name;
+  public function __construct(string $label, string $name, string $type = self::TEXT) {
+    parent::__construct(
+      ['label' => $label,'name' => $name, 'type' => $type]);
   }
 
   public function setData(string $value, string $error) {
-    $this->value = $value;
-    $this->error = $error;
+    $this->state['value'] = $value;
+    $this->state['error'] = $error;
   }
 
-  public function render(string $type = self::TEXT) {
-    return sprintf(
-      '<div class="mb-3">
-        <label class="form-label">%s</label>
-        %s
-        <div class="invalid-feedback">%s</div>
-      </div>',
-      $this->label,
-      $this->renderInputOnly($type),
-      $this->error
-    );
+  public function showLabel() {
+    $this->label = true;
   }
 
-  public function renderInputOnly(string $type = self::TEXT) {
+  public function render() {
+    if ($this->label) echo sprintf('<label class="form-label">%s</label>', $this->state['label']);
+    echo $this->generateInputOnly();
+    echo sprintf('<div class="invalid-feedback">%s</div>', $this->state['error']);
+  }
+
+  public function generateInputOnly() {
     return sprintf(
       '<input 
       type="%s" 
-      name="%s" 
-      value="%s" 
+      name="%s"
+      placeholder="%s"
+      value="%s"
       autocomplete="off"
       class="form-control %s">',
-      $type,
-      $this->attr,
-      $this->value,
-      empty($this->error) ? '' : 'is-invalid'
+      $this->state['type'],
+      $this->state['name'],
+      (!$this->label) ? $this->state['label'] : '',
+      $this->state['value'],
+      !isset($this->state['error']) || empty($this->state['error']) ? '' : 'is-invalid'
     );
   }
 }
