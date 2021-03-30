@@ -67,10 +67,10 @@ class Publisher extends Model
     return $query->fetchAll();
   }
 
-  public static function checkForPublisher(int $publisherId)
+  public static function checkForPublisher($data)
   {
     $authenticatePublisher = self::getDatabase()->prepare("SELECT * FROM publisher WHERE publisherId = :n");
-    $authenticatePublisher->bindValue(':n', $publisherId);
+    $authenticatePublisher->bindValue(':n', $data['publisherId']);
     $authenticatePublisher->execute();
     $publishers = $authenticatePublisher->fetchAll();
     return $publishers;
