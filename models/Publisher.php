@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\core\Model;
 
-class Book extends Model
+class Publisher extends Model
 {
   public function checkForPublisher(int $publisherId)
   {
