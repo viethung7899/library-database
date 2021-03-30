@@ -68,4 +68,20 @@ class Book_Author extends Model
     $query->execute();
     return $query->fetchAll();
   }
+  public static function checkForTitle($title)
+  {
+    $authenticateTitle = self::getDatabase()->prepare("SELECT * FROM author_book WHERE title = :t");
+    $authenticateTitle->bindValue(':t', $title);
+    $authenticateTitle->execute();
+    $titles = $authenticateTitle->fetchAll();
+    return $titles;
+  }
+  public static function checkForAuthor($author)
+  {
+    $authenticateAuthor = self::getDatabase()->prepare("SELECT * FROM author_book WHERE author = :a ");
+    $authenticateAuthor->bindValue(':a', $author);
+    $authenticateAuthor->execute();
+    $authors = $authenticateAuthor->fetchAll();
+    return $authors;
+  }
 }
