@@ -14,13 +14,13 @@ class Rule {
   public static function verify($value, $rule) {
     switch ($rule[0]) {
       case self::REQUIRED:
-        return (strlen($value) <= 0) ?
+        return (strlen(trim($value)) <= 0) ?
           'Required' : '';
       case self::MIN:
-        return (strlen($value) < $rule[1])
+        return (strlen(trim($value)) < $rule[1])
           ? 'At least '.$rule[1].' characters' : '';
       case self::MAX:
-        return (strlen($value) > $rule[1])
+        return (strlen(trim($value)) > $rule[1])
           ? 'At most '.$rule[1].' characters' : '';
       default:
         return '';

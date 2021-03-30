@@ -2,9 +2,11 @@
 
 use app\components\form\Field;
 use app\components\form\Form;
-use app\core\Request;
+use app\models\Employee;
 
-$form = new Form('/library/login', Form::POST, Request::body(), $errors ?? []);
+$model = $employee ?? new Employee();
+
+$form = new Form('/library/login', Form::POST, $model, $errors ?? []);
 $usernameField = $form->field('Username', 'username');
 $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
 

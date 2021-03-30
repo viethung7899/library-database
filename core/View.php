@@ -8,7 +8,7 @@ class View {
   private string $title;
   private array $params;
 
-  public function __construct(string $view = 'index', string $layout = 'base') {
+  public function __construct(string $view = 'index', string $layout = 'withNavigation') {
     $this->layout = $layout;
     $this->view = $view;
     $this->title = 'Document';

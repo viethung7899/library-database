@@ -5,7 +5,9 @@ namespace app\controllers;
 use app\core\Controller;
 use app\core\Response;
 use app\core\Request;
+use app\core\View;
 use app\models\User;
+use app\utils\Dumpster;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -17,30 +19,33 @@ class BaseController extends Controller {
   protected static function home() {}
 
   public static function notFound() {
-    $view = self::generateView('notFound', 'Home', 'withNavigation');
+    $view = self::generateView('notFound', 'Home');
     $view->render();
   }
 
   // Only return the response, not the view itself, the view should be handle by its subclass
   protected static function login() {
     $body = Request::body();
-    return User::login($body);
+    $user = new User();
+    return $user->login($body);
   }
 
   // Can access without login
   public static function searchBook() {
-    $view = self::generateView('searchBook', 'Book search', 'withNavigation');
+    $view = self::generateView('searchBook', 'Book search');
     // Resolve book search
-    $body = Request::body();
     // Else, show the error on the form
     $view->render();
   }
 
-  protected static function setSession(Response $response) {
+  // Only call after login method
+  protected static function setSession(Response $response, int $level = self::MEMBER) {
     $session = self::getSession();
-    $session->set('id', $response->content['id']);
-    $session->set('name', $response->content['name']);
-    $session->set('level', $response->content['level'] ?? 0);
+    $user = $response->content['user'];
+    Dumpster::dump($user);
+    $session->set('id', $user->user_id);
+    $session->set('name', $user->name);
+    $session->set('level', $level);
   }
 
   public static function isAuthenticated(int $level = self::MEMBER) {
@@ -55,5 +60,14 @@ class BaseController extends Controller {
     self::getSession()->reset();
     Response::redirect('/search');
     return;
+  }
+
+  public static function loadResponseToView(View $view, Response $response) {
+    $params = [
+      'body' => $response->content,
+      'errors' => $response->errors
+    ];
+    
+    $view->loadParameters($params);
   }
 }
