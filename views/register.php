@@ -2,9 +2,11 @@
 
 use app\components\form\Field;
 use app\components\form\Form;
-use app\core\Request;
+use app\models\User;
 
-$form = new Form('/register', Form::POST, Request::body(), $errors ?? []);
+$model = $user ?? new User();
+
+$form = new Form('/register', Form::POST, $model, $errors ?? []);
 $nameField = $form->field('Name', 'name');
 $usernameField = $form->field('Username', 'username');
 $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);

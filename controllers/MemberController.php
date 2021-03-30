@@ -14,13 +14,13 @@ class MemberController extends BaseController {
       Response::redirect('/search');
       return;
     }
-    $view = self::generateView('index', 'Home', 'withNavigation');
+    $view = self::generateView('index', 'Home');
     $view->render();
   }
 
   // Overide the login function
   public static function login() {
-    $view = self::generateView('login', 'Log in', 'withNavigation');
+    $view = self::generateView('login', 'Log in');
     // Call login function from
     if (Request::isPost()) {   
       $response = parent::login();   
@@ -44,7 +44,7 @@ class MemberController extends BaseController {
   public static function register() {
     // Resolve the register POST reequest
     $body = Request::body();
-    $view = self::generateView('register', 'Register', 'withNavigation');
+    $view = self::generateView('register', 'Register');
     
     if (Request::isPost()) {
       // If sucessful, redirect to home page

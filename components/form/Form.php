@@ -8,13 +8,13 @@ class Form {
 
   private string $action;
   private string $method;
-  private array $data;
+  private object $model;
   private array $errors;
 
-  public function __construct(string $action, string $method, array $data, array $errors) {
+  public function __construct(string $action, string $method, object $model, array $errors) {
     $this->action = $action;
     $this->method = $method;
-    $this->data = $data;
+    $this->model = $model;
     $this->errors = $errors;
   }
 
@@ -28,7 +28,7 @@ class Form {
 
   public function field(string $title, string $attr, bool $showLabel = true, string $type = Field::TEXT) {
     $field = new Field($title, $attr, $type);
-    $value = $this->data[$attr] ?? '';
+    $value = $this->model->{$attr} ?? '';
     $error = $this->errors[$attr] ?? '';
     $field->setData($value, $error);
     if ($showLabel) $field->showLabel();

@@ -11,3 +11,4 @@ $adminRoute->get('/add', [AdminController::class, 'addEmployee']);
 $adminRoute->post('/add', [AdminController::class, 'addEmployee']);
 
 $adminRoute->get('/search', [AdminController::class, 'searchEmployee']);
+$adminRoute->post('/search', [AdminController::class, 'searchEmployee']);

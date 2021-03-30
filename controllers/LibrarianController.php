@@ -13,14 +13,14 @@ class LibrarianController extends BaseController {
       Response::redirect('/library/login');
       return;
     }
-    $view = self::generateView('library/index', 'Home', 'withNavigation');
+    $view = self::generateView('library/index', 'Home');
     $view->render();
   }
 
   // Overide the login function
   public static function login() {
     // Call login function
-    $view = self::generateView('employeeLogin', 'Employee portal', 'withNavigation');
+    $view = self::generateView('employeeLogin', 'Employee portal');
 
     // Check credientials and redirect to suitable route
     if (Request::isPost()) {
@@ -29,10 +29,11 @@ class LibrarianController extends BaseController {
       if ($response->ok()) {
         $level = $response->content['user']->access_level;
         if ($level > 0) {
-          self::setSession($response);
-          if ($level == 1) {
+          if ($level == self::LIBRARIAN) {
+            self::setSession($response, self::LIBRARIAN);
             Response::redirect('/library');
           } else {
+            self::setSession($response, self::ADMIN);
             Response::redirect('/admin');
           }
           return;

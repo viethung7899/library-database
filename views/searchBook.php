@@ -1,9 +1,11 @@
 <?php
 
 use app\components\form\Form;
-use app\core\Request;
+use app\models\Book;
 
-$form = new Form('/search', Form::POST, Request::body(), $errors ?? []);
+$model = $book ?? new Book();
+
+$form = new Form('/search', Form::POST, $model, $errors ?? []);
 $bookField = $form->field('Searching...', 'name', false);
 
 ?>

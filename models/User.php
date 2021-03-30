@@ -8,13 +8,14 @@ use app\utils\Rule;
 
 class User extends Model {
   public ?int $user_id;
-  public ?string $name;
-  public ?string $username;
+  public string $name;
+  public string $username;
   protected ?string $password;
   protected ?string $confirmPassword;
   protected ?string $hash_password;
   public ?int $access_level;
 
+  // Rules for validation
   protected static function rules() {
     return [
       'name' => [
@@ -47,7 +48,7 @@ class User extends Model {
     $response = $this->verifyInput();
 
     // Verify the matching password
-    if ($this->password !== $this->confirmPassword) {
+    if (isset($this->confirmPassword) && $this->password !== $this->confirmPassword) {
       $response->addError('confirmPassword', 'Passwords are not match');
     }
 
@@ -100,6 +101,7 @@ class User extends Model {
     return $response;
   }
 
+  // Find one user by id
   protected static function findOneById(int $id) {
     $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE user_id = :id LIMIT 1');
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);
@@ -107,6 +109,7 @@ class User extends Model {
     return $statement->fetchAll();
   }
 
+  // Find one user by username
   protected static function findOneInfoByUsername(string $username) {
     $statement = self::getDatabase()->prepare('SELECT u.user_id, u.name, p.hash_password, p.access_level 
       FROM user u JOIN privilege p ON u.user_id = p.user_id 

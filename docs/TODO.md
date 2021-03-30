@@ -19,7 +19,7 @@
 ### Librarians
 
 - [x] Log in
-- [ ] Log out
+- [x] Log out
 - [ ] Add books
 - [ ] Remove books
 - [ ] Search books
@@ -33,7 +33,7 @@
 ### Admin
 
 - [x] Log in
-- [ ] Log out
+- [x] Log out
 - [x] Add employees
 - [ ] Modify employees' info
 - [ ] Remove employees

@@ -8,7 +8,7 @@ class Controller {
     return Application::getApp()->getSession();
   }
 
-  public static function generateView(string $view, string $title = 'Document', string $layout = 'base') {
+  public static function generateView(string $view, string $title = 'Document', string $layout = 'withNavigation') {
     $view = new View($view, $layout);
     $view->setTitle($title);
     return $view;

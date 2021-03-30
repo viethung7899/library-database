@@ -7,6 +7,7 @@ use app\core\Response;
 use app\core\Request;
 use app\core\View;
 use app\models\User;
+use app\utils\Dumpster;
 
 // This controller is interacting with the User model
 class BaseController extends Controller {
@@ -18,7 +19,7 @@ class BaseController extends Controller {
   protected static function home() {}
 
   public static function notFound() {
-    $view = self::generateView('notFound', 'Home', 'withNavigation');
+    $view = self::generateView('notFound', 'Home');
     $view->render();
   }
 
@@ -31,19 +32,20 @@ class BaseController extends Controller {
 
   // Can access without login
   public static function searchBook() {
-    $view = self::generateView('searchBook', 'Book search', 'withNavigation');
+    $view = self::generateView('searchBook', 'Book search');
     // Resolve book search
     // Else, show the error on the form
     $view->render();
   }
 
   // Only call after login method
-  protected static function setSession(Response $response) {
+  protected static function setSession(Response $response, int $level = self::MEMBER) {
     $session = self::getSession();
     $user = $response->content['user'];
+    Dumpster::dump($user);
     $session->set('id', $user->user_id);
     $session->set('name', $user->name);
-    $session->set('level', $user->access_level);
+    $session->set('level', $level);
   }
 
   public static function isAuthenticated(int $level = self::MEMBER) {
