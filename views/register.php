@@ -7,8 +7,8 @@ use app\core\Request;
 $form = new Form('/register', Form::POST, Request::body(), $errors ?? []);
 $nameField = $form->field('Name', 'name');
 $usernameField = $form->field('Username', 'username');
-$passwordField = $form->field('Password', 'password', Field::PASSWORD);
-$confirmPasswordField = $form->field('Confirm password', 'confirmPassword', Field::PASSWORD);
+$passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
+$confirmPasswordField = $form->field('Confirm password', 'confirmPassword', true, Field::PASSWORD);
 
 ?>
 

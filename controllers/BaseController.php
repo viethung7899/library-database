@@ -58,4 +58,10 @@ class BaseController extends Controller {
     }
     return false;
   }
+
+  public static function logout() {
+    self::getSession()->reset();
+    Response::redirect('/search');
+    return;
+  }
 }

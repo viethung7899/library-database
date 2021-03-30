@@ -6,7 +6,7 @@ use app\core\Request;
 
 $form = new Form('/login', Form::POST, Request::body(), $errors ?? []);
 $usernameField = $form->field('Username', 'username');
-$passwordField = $form->field('Password', 'password', Field::PASSWORD);
+$passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
 
 ?>
 
