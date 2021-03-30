@@ -6,18 +6,15 @@ use app\models\Book;
 
 $model = $book ?? new Book();
 
-$form = new Form('/search', Form::GET, $model, $errors ?? []);
-$bookField = $form->field('Search by title...', 'title', false);
-
-$level = BaseController::getSession()->get('level') ?? -1;
-$viewLink = '';
-if ($level === BaseController::MEMBER) $viewLink = '/book?isbn=';
-if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
-
+$form = new Form('/library/reservation', Form::GET, $model, $errors ?? []);
+$idField = $form->field('ID', 'user_id');
+$nameField = $form->field('Name', 'name');
+$isbnField = $form->field('ISBN', 'isbn');
+$titleField = $form->field('Book title', 'title');
 
 ?>
 
-<h1 class="my-5">Search for books</h1>
+<h1 class="my-5">Search reservations</h1>
 
 <?php $form->begin(); ?>
 <div class="input-group mb-3">
@@ -41,12 +38,12 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 <table class="table table-striped table-hover">
   <thead>
     <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
       <th scope="col">ISBN</th>
       <th scope="col">Title</th>
-      <th scope="col">Author</th>
-      <th scope="col">Publisher</th>
-      <th scope="col">Year</th>
-      <th scope="col">Quantity</th>
+      <th scope="col">Reservation date</th>
+      <th scope="col">Pickup date</th>
 
       <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
         <th></th>
@@ -65,7 +62,8 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       <td><?php echo $book->quantity; ?></td>
       <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
         <th>
-        <a class="btn btn btn-outline-success" href="<?php echo $viewLink.$book->isbn ?>" role="button">View</a>
+        <a class="btn btn btn-outline-success" href="" role="button">Confirm</a>
+        <a class="btn btn btn-outline-danger" href="" role="button">Delete</a>
         </th>
       <?php endif; ?>
     </tr>
