@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models;
 
 class Member extends User {
@@ -22,5 +23,11 @@ class Member extends User {
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);
     $statement->bindValue(':period', $period, \PDO::PARAM_INT);
     return $statement->execute();
+  }
+
+  // Count the number of members
+  public static function count() {
+    $statement = self::getDatabase()->query("SELECT count(*) FROM member");
+    return $statement->fetchColumn();
   }
 }

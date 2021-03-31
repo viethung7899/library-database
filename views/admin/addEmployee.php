@@ -3,16 +3,16 @@
 use app\components\form\Form;
 use app\components\LevelSelector;
 use app\components\RoleSelector;
-use app\core\Request;
 use app\models\Employee;
 
-$model = $employee ?? new Employee();
+$model = $body['employee'] ?? new Employee();
 
 $form = new Form('/admin/add', 'post', $model, $errors ?? []);
 
 $nameField = $form->field('Name', 'name');
 $usernameField = $form->field('Username', 'username');
 $passwordField = $form->field('Password', 'password');
+$supervisorFeild = $form->field('Supervisor ID', 'supervisor_id');
 
 $roleSelector = new RoleSelector();
 $levelSelector = new LevelSelector();
@@ -43,6 +43,9 @@ $levelSelector = new LevelSelector();
   </div>
   <div class="col-md mb-3">
     <?php $levelSelector->render(); ?>
+  </div>
+  <div class="col-md mb-3">
+    <?php $supervisorFeild->render(); ?>
   </div>
 </div>
 

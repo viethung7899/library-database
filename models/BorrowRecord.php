@@ -127,4 +127,14 @@ class BorrowRecord extends Model {
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
   }
+
+  // Count the number of users
+  public static function countByUserId(int $id = -1, bool $overdue = false) {
+    $matchId = ($id <= 0) ? '1' : 'user_id = :id';
+    $overdueOnly = $overdue ? '`returnDate` < CURRENT_DATE' : '1';
+    $statement = self::getDatabase()->prepare("SELECT count(*) FROM borrow_record WHERE $matchId AND $overdueOnly AND returned = 'N'");
+    if ($id > 0) $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+    $statement->execute();
+    return $statement->fetchColumn();
+  }
 }

@@ -6,13 +6,24 @@ use app\core\Response;
 
 class Employee extends User {
   public string $role;
-  public ?int $supervisor_id = null;
+  public ?int $supervisor_id = NULL;
 
   // Register an employee
   public function register() {
     $response = parent::register();
     if ($response->ok()) {
       $id = $this->user_id;
+
+      if ($this->supervisor_id != NULL) {
+        // Search for employee
+        $supervisor = self::getOneById($this->supervisor_id);
+        if (empty($supervisor)) {
+          $response->addError('supervisor_id', 'Supervisor ID not found');
+          self::deleteUser($id);
+          return $response;
+        }
+      }
+
       // Add to the privilege
       $hash = password_hash($this->password, PASSWORD_DEFAULT);
       Privilege::addPrevilege($id, $hash, $this->access_level);
@@ -50,12 +61,17 @@ class Employee extends User {
     return $statement;
   }
 
-  public static function getOneById(string $id) {
+  public static function getOneById(int $id) {
     $statement = self::getDatabase()->prepare("SELECT u.user_id, u.name, e.role
-      FROM user u JOIN library_staff e ON u.user_id = e.staff_id 
-      WHERE u.user_id = :id");
-    $statement->bindValue(':id', $id);
+      FROM user u JOIN library_staff e ON u.user_id = e.staff_id AND e.staff_id = :id");
+    $statement->bindValue(':id', $id, \PDO::PARAM_INT);
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_CLASS, Employee::class);
+  }
+  
+  // Count the number of employees
+  public static function count() {
+    $statement = self::getDatabase()->query("SELECT count(*) FROM library_staff");
+    return $statement->fetchColumn();
   }
 }

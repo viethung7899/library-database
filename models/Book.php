@@ -72,7 +72,7 @@ class Book extends Model {
 
     // Add or ignore book and author
     BookAuthor::addOrIgnoreBookAuthor($this);
-    
+
     // Add or ignore book_author_publisher
     BookAuthorPublisher::addOrIgnoreBookAuthorPublisher($this);
 
@@ -139,5 +139,26 @@ class Book extends Model {
     $statment->bindValue(':i', $isbn);
     $statment->execute();
     return $statment->fetchColumn();
+  }
+
+  public static function total() {
+    $statement = self::getDatabase()->query('SELECT sum(quantity) FROM book');
+    return $statement->fetchColumn();
+  }
+
+  public static function countIBSN() {
+    $statement = self::getDatabase()->query('SELECT count(*) FROM book');
+    return $statement->fetchColumn();
+  }
+
+  public static function borrowedByEveryMember() {
+    $query = 'SELECT b.isbn, b.title, b.author, b.category_name FROM book_view b WHERE NOT EXISTS (
+        SELECT * FROM member m WHERE NOT EXISTS (
+          SELECT r.user_id FROM borrow_record r 
+            WHERE b.isbn = r.isbn AND r.user_id = m.member_id
+        )
+      )';
+    $statement = self::getDatabase()->query($query);
+    return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
   }
 }

@@ -30,13 +30,19 @@ if ($level == BaseController::ADMIN) {
           <a class="nav-link active" aria-current="page" href="<?php echo $indexLink; ?>">Home</a>
         </li>
         
-        <!-- Search menu -->
         <?php if ($level !== BaseController::ADMIN): ?>
+        <!-- Search menu -->
         <li class="nav-item">
           <a class="nav-link" href="/search">Search</a>
         </li>
+        
+        <!-- Everyone's favorite -->
+        <li class="nav-item">
+          <a class="nav-link" href="/favorite">Favorite</a>
+        </li>
         <?php endif; ?>
 
+        
 
         <!-- Member menu -->
         <?php 
@@ -62,7 +68,7 @@ if ($level == BaseController::ADMIN) {
       </div>
       <?php else: ?>
       <div class="d-flex">
-        <a class="btn btn-link mx-2" type="submit" role="button" href="/profile">
+        <a class="btn btn-link mx-2" type="submit" role="button" href="#">
           <?php echo Application::getApp()->getSession()->get('name'); ?>
         </a>
         <a class="btn btn-outline-primary" type="submit" role="button" href="/logout">Logout</a>

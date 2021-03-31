@@ -11,7 +11,7 @@ $bookField = $form->field('Search by title...', 'title', false);
 
 $level = BaseController::getSession()->get('level') ?? -1;
 $viewLink = '';
-if ($level === BaseController::MEMBER) $viewLink = '/book?isbn=';
+if ($level <= BaseController::MEMBER) $viewLink = '/book?isbn=';
 if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 
 
@@ -48,7 +48,7 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       <th scope="col">Year</th>
       <th scope="col">Quantity</th>
 
-      <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
+      <?php if ($level != BaseController::ADMIN) : ?>
         <th></th>
       <?php endif; ?>
     </tr>
@@ -63,7 +63,7 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       <td><?php echo $book->publisher_name; ?></td>
       <td><?php echo $book->year; ?></td>
       <td><?php echo $book->quantity; ?></td>
-      <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
+      <?php if ($level != BaseController::ADMIN) : ?>
         <th>
         <a class="btn btn btn-outline-success" href="<?php echo $viewLink.$book->isbn ?>" role="button">View</a>
         </th>

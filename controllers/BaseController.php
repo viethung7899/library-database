@@ -108,4 +108,9 @@ class BaseController extends Controller {
 
     return $response;
   }
+
+  public static function favorite() {
+    $view = self::generateView('favorite', 'Favorite');
+    $view->render();
+  }
 }
