@@ -16,6 +16,7 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 
 $showPublisher = $body['publisher'] ?? false;
 $showYear = $body['year'] ?? false;
+$showISBN = $body['ISBN'] ?? false;
 
 
 ?>
@@ -29,6 +30,10 @@ $showYear = $body['year'] ?? false;
 </div>
 
 <div class="me-3">Show more</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showISBN" type="checkbox" value="publisher">
+  <label class="form-check-label" for="inlineCheckbox2">ISBN</label>
+</div>
 <div class="form-check form-check-inline">
   <input class="form-check-input" name="showPublisher" type="checkbox" value="publisher">
   <label class="form-check-label" for="inlineCheckbox2">Publisher</label>
@@ -55,7 +60,10 @@ Search by
 <table class="table table-striped table-hover">
   <thead>
     <tr>
-      <th scope="col">ISBN</th>
+      <?php if ($showISBN) : ?>
+        <th scope="col">ISBN</th>
+      <?php endif; ?>
+
       <th scope="col">Title</th>
       <th scope="col">Author</th>
       <?php if ($showPublisher) : ?>
@@ -75,7 +83,10 @@ Search by
   foreach ($books as $book) :
   ?>
     <tr>
-      <th scope="row"><?php echo $book->isbn; ?></th>
+      <?php if ($showISBN) : ?>
+        <th scope="row"><?php echo $book->isbn; ?></th>
+      <?php endif; ?>
+
       <td><?php echo $book->title; ?></td>
       <td><?php echo $book->author; ?></td>
       <?php if ($showPublisher) : ?>
@@ -85,7 +96,7 @@ Search by
         <td><?php echo $book->year; ?></td>
       <?php endif; ?>
 
-      <td><?php echo $book->quantity; ?></td>
+      <td><?php echo $book->total; ?></td>
       <?php if ($level != BaseController::ADMIN) : ?>
         <th>
           <a class="btn btn btn-outline-success" href="<?php echo $viewLink . $book->isbn ?>" role="button">View</a>

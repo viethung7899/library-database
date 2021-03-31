@@ -15,6 +15,7 @@ class Book extends Model {
   public ?int $category_id = NULL;
   public ?string $category_name = NULL;
   public ?int $quantity = 0;
+  public ?int $total = 0;
   public ?int $year = NULL;
 
   // Implement the validation rules
@@ -36,9 +37,9 @@ class Book extends Model {
 
   // Search by book name with all information
   public static function searchBooksByName(string $title, array $attr = []) {
-    $keyword = "%$title%";
     $project = (empty($attr)) ? '*' : implode(',', $attr);
-    $query = self::getDatabase()->prepare("SELECT $project FROM book_view WHERE title LIKE :k");
+    $query = self::getDatabase()->prepare("SELECT $project, sum(quantity) as total FROM book_view WHERE title LIKE :k GROUP BY $project");
+    $keyword = "%$title%";
     $query->bindValue(':k', $keyword);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
@@ -48,7 +49,7 @@ class Book extends Model {
   public static function searchBooksByAuthor(string $author, array $attr = []) {
     $keyword = "%$author%";
     $project = (empty($attr)) ? '*' : implode(',', $attr);
-    $query = self::getDatabase()->prepare("SELECT $project FROM book_view WHERE author LIKE :k");
+    $query = self::getDatabase()->prepare("SELECT $project, sum(quantity) as total FROM book_view WHERE author LIKE :k GROUP BY $project");
     $query->bindValue(':k', $keyword);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
@@ -88,7 +89,11 @@ class Book extends Model {
   // Search books based on input
   public static function search(array $input) {
     // Get all shown attrubite
-    $attrs = ['isbn', 'title', 'author', 'quantity'];
+    $attrs = ['title', 'author'];
+    if (isset($input['showISBN'])) {
+      $attrs[] = 'isbn';
+    }
+
     if (isset($input['showPublisher'])) {
       $attrs[] = 'publisher_name';
     }
