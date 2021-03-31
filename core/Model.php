@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\utils\Dumpster;
+
 class Model {
   // Get the instacne of the database
   protected static function getDatabase() {

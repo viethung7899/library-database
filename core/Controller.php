@@ -4,7 +4,7 @@ namespace app\core;
 
 class Controller {
   // Generate the view with specific view template and layout template
-  protected static function getSession() {
+  public static function getSession() {
     return Application::getApp()->getSession();
   }
 

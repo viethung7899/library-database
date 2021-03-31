@@ -9,7 +9,7 @@ $indexLink = '/';
 $menu = Application::getRootDir().'/components/menu/';
 
 if ($level == BaseController::LIBRARIAN) {
-  $indexLink = '/librarian';
+  $indexLink = '/library';
 }
 
 if ($level == BaseController::ADMIN) {

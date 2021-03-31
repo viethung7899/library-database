@@ -3,76 +3,131 @@
 namespace app\models;
 
 use app\core\Model;
+use app\utils\Rule;
 
-class Book extends Model
-{
-  public static function searchBooksByName(string $keyword)
-  {
-    $query = self::getDatabase()->prepare("SELECT * FROM book WHERE book_name LIKE '%$keyword%'");
+class Book extends Model {
+  public ?string $isbn = NULL;
+  public ?string $title = '';
+  public ?string $author = NULL;
+  public ?int $publisher_id = NULL;
+  public ?string $publisher_name = NULL;
+  public ?int $category_id = NULL;
+  public ?string $category_name = NULL;
+  public ?int $quantity = 0;
+  public ?int $year = NULL;
+
+  // Conflict
+
+
+  public static function rules() {
+    return [
+      'isbn' => [[Rule::REQUIRED], [Rule::NUMERIC]],
+      'title' => [[Rule::REQUIRED]],
+      'author' => [[Rule::REQUIRED]],
+      'publisher_name' => [[Rule::REQUIRED]],
+      'quantity' => [[Rule::REQUIRED], [Rule::NUMERIC]],
+      'year' => [[Rule::REQUIRED], [Rule::NUMERIC]],
+    ];
+  }
+
+  // Construct by loading data from request
+  public function __construct(bool $load = false) {
+    if ($load) $this->loadDataFromRequest();
+  }
+
+  // Search by book name with all information
+  public static function searchBooksByName(string $title) {
+    $keyword = "%$title%";
+    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE title LIKE :k");
+    $query->bindValue(':k', $keyword);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
+  // Search by book name with all information
+  public static function searchBooksByAuthor(string $author) {
+    $keyword = "%$author%";
+    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE author LIKE :k");
+    $query->bindValue(':k', $keyword);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
+  public static function getBookByISBN(string $isbn) {
+    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE isbn = :i LIMIT 1");
+    $query->bindValue(':i', $isbn);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
+  // Verification and add book across database
+  public function add() {
+    $response = $this->verifyInput();
+
+    if (!$response->ok()) {
+      return $response;
+    }
+
+    // Get the publisher id
+    $this->publisher_id = Publisher::addPublisher($this);
+
+    // Add or ignore book and author
+    BookAuthor::addOrIgnoreBookAuthor($this);
+    
+    // Add or ignore book_author_publisher
+    BookAuthorPublisher::addOrIgnoreBookAuthorPublisher($this);
+
+
+    // Add or update book table
+    self::addOrUpdateBook($this);
+
+    return $response;
+  }
+
+  // Search books based on input
+  public static function search(array $input) {
+    if (isset($input['title'])) {
+      return self::searchBooksByName($input['title']);
+    } else if (isset($input['author'])) {
+      return self::searchBooksByAuthor($input['author']);
+    }
+    return [];
+  }
+
+  // Either add or update the quantity of books
+  public static function addOrUpdateBook(Book $book) {
+    $query = self::getDatabase()->prepare("INSERT INTO book (isbn, title, author, publisher_id, quantity) 
+      VALUES (:i, :t, :a, :p, :q) ON DUPLICATE KEY UPDATE quantity = :q + quantity");
+    $query->bindValue(':i', $book->isbn);
+    $query->bindValue(':t', $book->title);
+    $query->bindValue(':a', $book->author);
+    $query->bindValue(':p', $book->publisher_id, \PDO::PARAM_INT);
+    $query->bindValue(':q', $book->quantity, \PDO::PARAM_INT);
     $query->execute();
     return $query->fetchAll();
   }
 
-  public static function searchBooksByAuthor(string $keyword)
-  {
-    $query = self::getDatabase()->prepare("SELECT * FROM book WHERE author LIKE '%$keyword%'");
+  // Get all books with same title, author and publisher to a book with a ISBN
+  private static function searchByBooksSameTitleAuthorPublisher(string $isbn) {
+    $query = self::getDatabase()->prepare("SELECT b1.isbn, b1.title, b1.author, b1.publisher_id
+      FROM book b1 JOIN book b2 
+      ON b1.title = b2.title AND b1.author = b2.author 
+      AND b1.publisher_id = b2.publisher_id AND b2.isbn = :i");
+    $query->bindValue(':i', $isbn);
     $query->execute();
-    return $query->fetchAll();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
   }
 
-  public static function getBookByISBN(string $isbn)
-  {
-    $query = self::getDatabase()->prepare("SELECT * FROM book WHERE isbn = '$isbn'");
+  // Doing the cascade delete for book
+  public static function deleteBook(string $isbn) {
+    $books = self::searchByBooksSameTitleAuthorPublisher($isbn);
+    $query = self::getDatabase()->prepare("DELETE FROM book WHERE isbn = :i");
+    $query->bindValue(':i', $isbn);
     $query->execute();
-    return $query->fetchAll();
-  }
 
-  public static function addBook($data)
-  {
-    //check if something inputted is null
-    foreach ($data as $key => $value) {
-      if (!isset($value)) {
-        //IF NULL SEND ERROR MESSAGE 
-        //RETURN
-      }
+    // Should delete book_author_publisher ?
+    if (count($books) == 1) {
+      BookAuthorPublisher::shouldDeleteBookAuthorPublisher($books[0]);
     }
-    //cheeck if publisher is in publisher table
-    $authenticatePublisher = self::getDatabase()->prepare("SELECT * FROM publisher WHERE publisherId = $data[publisherId]");
-    $authenticatePublisher->execute();
-    $publishers = $authenticatePublisher->fetchAll();
-    if (!$publishers) {
-      //ADD PUBLISHER OR ERROR MESSAGE
-    }
-    //check if category is in category table
-    $authenticateCategory = self::getDatabase()->prepare("SELECT * FROM category WHERE categoryId = $data[categoryId]");
-    $authenticateCategory->execute();
-    $categories = $authenticateCategory->fetchAll();
-    if (!$categories) {
-      //ADD CATEGORY OR ERROR MESSAGE
-    }
-    $authenticateBookAuthor = self::getDatabase()->prepare("SELECT * FROM book_author WHERE title = $data[title] AND author = $data[author]");
-    $authenticateBookAuthor->execute();
-    $BookAuthor = $authenticateBookAuthor->fetchAll();
-    if (!$BookAuthor) {
-      //ADD BOOK_AUTHOR OR ERROR MESSAGE
-    }
-    $authenticateBookAuthorPublisher = self::getDatabase()->prepare("SELECT * FROM book_author WHERE title = $data[title] AND author = $data[author] AND publisher = $data[publisher]");
-    $authenticateBookAuthorPublisher->execute();
-    $BookAuthorPublisher = $authenticateBookAuthorPublisher->fetchAll();
-    if (!$BookAuthorPublisher) {
-      //ADD BOOK_AUTHOR_PUBLISHER OR ERROR MESSAGE
-    }
-    $into = "isbn, title, author, pusblisherId, year, categoryId, quantity, reserveOnly";
-    $query = self::getDatabase()->prepare("INSERT INTO book (" . $into . ") VALUES ($data[isbn], $data[title], $data[author], $data[publisherId], $data[year], $data[categoryId], $data[quantity], $data[reserveOnly])");
-    $query->execute();
-    return $query->fetchAll();
-  }
-
-  public static function deleteBook(string $isbn)
-  {
-  }
-
-  public static function modifyBook($data)
-  {
   }
 }

@@ -6,6 +6,7 @@ class Rule {
   const REQUIRED = 0;
   const MIN = 1;
   const MAX = 2;
+  const NUMERIC = 3;
 
   // Verify the rules
   // $rule is an array with more than one element
@@ -22,6 +23,9 @@ class Rule {
       case self::MAX:
         return (strlen(trim($value)) > $rule[1])
           ? 'At most '.$rule[1].' characters' : '';
+      case self::NUMERIC:
+        return (!is_numeric($value))
+          ? 'Not a number' : '';
       default:
         return '';
     }

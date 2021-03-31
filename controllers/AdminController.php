@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Employee;
-use app\utils\Dumpster;
 
 class AdminController extends BaseController {
   public static function home() {

@@ -11,3 +11,14 @@ $librarianRoute->get('', [LibrarianController::class, 'home']);
 // To the login page
 $librarianRoute->get('/login', [LibrarianController::class, 'login']);
 $librarianRoute->post('/login', [LibrarianController::class, 'login']);
+
+// Book
+$librarianRoute->get('/book', [LibrarianController::class, 'book']);
+$librarianRoute->get('/book/add', [LibrarianController::class, 'addBook']);
+$librarianRoute->post('/book/add', [LibrarianController::class, 'addBook']);
+$librarianRoute->post('/book/delete', [LibrarianController::class, 'deleteBook']);
+
+
+$librarianRoute->get('/reservation', [LibrarianController::class, 'reservation']);
+$librarianRoute->get('/borrow', [LibrarianController::class, 'borrow']);
+$librarianRoute->get('/payment', [LibrarianController::class, 'payment']);
