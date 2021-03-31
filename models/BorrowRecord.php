@@ -21,7 +21,7 @@ class BorrowRecord extends Model
     return $statement->execute();
   }
 
-  public static function deleteBorrowRecordpublic(string $user_id, string $isbn)
+  public static function deleteBorrowRecord(string $user_id, string $isbn)
   {
     $statement = self::getDatabase()->prepare("DELETE FROM borrowRecord WHERE user_id = :id AND isbn = :isbn)");
     $statement->bindValue(':id', $user_id);
