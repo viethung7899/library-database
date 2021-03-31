@@ -22,6 +22,7 @@ class AdminController extends BaseController {
     if (Request::isPost()) {
       $employee = new Employee();
       $response = $employee->register();
+      $response->content['employee'] = $employee;
       self::loadResponseToView($view, $response);
     }
     $view->render();
@@ -35,17 +36,5 @@ class AdminController extends BaseController {
       self::loadResponseToView($view, $response);
     }
     $view->render();
-  }
-
-  public static function editEmployee() {
-    if (Request::isPost()) {
-
-    }
-  }
-
-  public static function deleteEmployee() {
-    if (Request::isPost()) {
-      
-    }
   }
 }

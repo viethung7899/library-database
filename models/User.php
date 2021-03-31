@@ -119,6 +119,12 @@ class User extends Model {
     return $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
   }
 
+  protected static function deleteUser(int $id) {
+    $statement = self::getDatabase()->prepare('DELETE FROM user WHERE user_id = :id');
+    $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+    return $statement->execute();
+  }
+
   // Return last inserted id when adding new user
   protected static function addNewUser(string $name, string $username) {
     $statement = self::getDatabase()->prepare('INSERT INTO user (name, username) VALUES (:name, :username)');
