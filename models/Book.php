@@ -150,4 +150,15 @@ class Book extends Model {
     $statement = self::getDatabase()->query('SELECT count(*) FROM book');
     return $statement->fetchColumn();
   }
+
+  public static function borrowedByEveryMember() {
+    $query = 'SELECT b.isbn, b.title, b.author, b.category_name FROM book_view b WHERE NOT EXISTS (
+        SELECT * FROM member m WHERE NOT EXISTS (
+          SELECT r.user_id FROM borrow_record r 
+            WHERE b.isbn = r.isbn AND r.user_id = m.member_id
+        )
+      )';
+    $statement = self::getDatabase()->query($query);
+    return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
 }

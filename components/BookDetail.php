@@ -32,7 +32,7 @@ $av = $book->quantity - $rc - $bc;
       <td><?php echo $book->category_name ?></td>
     </tr>
     <tr>
-      <th scope="row">Avaibable copies</th>
+      <th scope="row">Available copies</th>
       <td><?php echo $av ?></td>
     </tr>
     <tr>

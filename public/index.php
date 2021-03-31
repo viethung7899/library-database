@@ -31,5 +31,6 @@ include_once "$rootDir/routes/admin.php";
 // Adding more route to the app
 $app->get('/', [MemberController::class, 'home']);
 $app->get('/search', [BaseController::class, 'searchBook']);
+$app->get('/favorite', [BaseController::class, 'favorite']);
 
 $app->run();

@@ -43,7 +43,7 @@ class LibrarianController extends BaseController {
           }
           return;
         } else {
-          $response->addError('username', 'You cannot access to the portal');
+          $response->addError('username', 'Access denied');
         }
       }
       self::loadResponseToView($view, $response);

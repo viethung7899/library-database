@@ -27,7 +27,7 @@ class Member extends User {
 
   // Count the number of members
   public static function count() {
-    $statement = self::getDatabase()->query("SELECT count(*) FROM members");
+    $statement = self::getDatabase()->query("SELECT count(*) FROM member");
     return $statement->fetchColumn();
   }
 }
