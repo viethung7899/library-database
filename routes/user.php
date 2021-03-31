@@ -17,4 +17,8 @@ $memberRoute->get('/logout', [BaseController::class, 'logout']);
 $memberRoute->get('/borrow', [MemberController::class, 'borrow']);
 $memberRoute->get('/reservation', [MemberController::class, 'reservation']);
 
+$memberRoute->post('/reservation/confirm', [MemberController::class, 'makeReservation']);
+$memberRoute->post('/reservation/cancel', [MemberController::class, 'cancelReservation']);
+
+
 $memberRoute->get('/book', [MemberController::class, 'book']);

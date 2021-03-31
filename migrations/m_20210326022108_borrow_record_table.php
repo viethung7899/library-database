@@ -3,6 +3,7 @@
 class m_20210326022108_borrow_record_table {
   public function up(\PDO $pdo) {
     $query = "CREATE TABLE borrow_record (
+      id INT AUTO_INCREMENT PRIMARY KEY,
       user_id INT NOT NULL,
       isbn VARCHAR(255) NOT NULL,
       borrowDate DATE NOT NULL,

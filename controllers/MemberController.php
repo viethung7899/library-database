@@ -82,6 +82,11 @@ class MemberController extends BaseController {
     
   }
 
+  // Control /reservation/confirm
+  public static function makeReservation() {
+    
+  }
+
   // Control /book?isbn=
   // Getting the books details and show reservation buttons
   public static function book() {

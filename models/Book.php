@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Model;
+use app\utils\Dumpster;
 use app\utils\Rule;
 
 class Book extends Model {
@@ -16,9 +17,7 @@ class Book extends Model {
   public ?int $quantity = 0;
   public ?int $year = NULL;
 
-  // Conflict
-
-
+  // Implement the validation rules
   public static function rules() {
     return [
       'isbn' => [[Rule::REQUIRED], [Rule::NUMERIC]],
@@ -129,5 +128,16 @@ class Book extends Model {
     if (count($books) == 1) {
       BookAuthorPublisher::shouldDeleteBookAuthorPublisher($books[0]);
     }
+  }
+
+  // Count available books, make sure books is found
+  public static function countAvailableBooks(string $isbn) {
+    $query = "SELECT sum(quantity) FROM book WHERE isbn = :i - (
+      SELECT count(*) FROM reservation WHERE isbn = :i
+     + (SELECT count(*) FROM borrow_record WHERE isbn = :i AND returned = 'N'))";
+    $statment = self::getDatabase()->prepare($query);
+    $statment->bindValue(':i', $isbn);
+    $statment->execute();
+    return $statment->fetchColumn();
   }
 }

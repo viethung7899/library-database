@@ -102,7 +102,7 @@ class User extends Model {
   }
 
   // Find one user by id
-  protected static function findOneById(int $id) {
+  public static function findOneById(int $id) {
     $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE user_id = :id LIMIT 1');
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);
     $statement->execute();

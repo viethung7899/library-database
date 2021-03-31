@@ -17,7 +17,7 @@ class Publisher extends Model {
   public static function addPublisher(Book $book) {
     $exisitingId = self::findPublisherId($book->publisher_name);
     if ($exisitingId) return $exisitingId;
-    $query = self::getDatabase()->prepare("INSERT INTO publisher publisher_name VALUES :n");
+    $query = self::getDatabase()->prepare("INSERT INTO publisher (publisher_name) VALUES (:n)");
     $query->bindValue(':n', $book->publisher_name);
     $query->execute();
     return self::getDatabase()->pdo->lastInsertId();
