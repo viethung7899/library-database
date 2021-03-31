@@ -29,7 +29,7 @@ $showISBN = $body['ISBN'] ?? false;
   <button class="btn btn-outline-primary" type="submit">Search</button>
 </div>
 
-<div class="me-3">Show more</div>
+<div class="mt-3">Show more</div>
 <div class="form-check form-check-inline">
   <input class="form-check-input" name="showISBN" type="checkbox" value="publisher" <?php echo $showISBN ? 'checked' : '' ?>>
   <label class="form-check-label" for="inlineCheckbox2">ISBN</label>
@@ -44,7 +44,8 @@ $showISBN = $body['ISBN'] ?? false;
 </div>
 <?php $form->end(); ?>
 
-Search by
+
+<div class="mt-3">Search by</div>
 <div id="search-by" class="mb-3">
   <div class="form-check form-check-inline">
     <input class="form-check-input" type="radio" name="by" value="title" checked>
