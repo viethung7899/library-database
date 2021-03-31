@@ -7,7 +7,6 @@ class m_20210326022108_borrow_record_table {
       isbn VARCHAR(255) NOT NULL,
       borrowDate DATE NOT NULL,
       returnDate DATE NOT NULL,
-      PRIMARY KEY (user_id, isbn),
       FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
       FOREIGN KEY (isbn) REFERENCES book(isbn) ON DELETE CASCADE
     )";
