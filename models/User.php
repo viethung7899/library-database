@@ -72,6 +72,35 @@ class User extends Model {
     return $response;
   }
 
+  // Update user to the system
+  // $data is an array having the field of username, password, confirmPassword
+  public function update(User $old) {
+    // Verify the input data
+    $response = $this->verifyInput();
+
+    // Failed validation
+    if (!$response->ok()) {
+      return $response;
+    }
+
+    // Check for exisitng user or ignore if the username not change
+    if ($old->username !== $this->username) {
+      $existing = self::findOneInfoByUsername($this->username);
+      if (!empty($existing)) {
+        $response->addError('username', 'Username already existed');
+        return $response;
+      }
+    }
+
+    // Update new user
+    $id = self::updateUser($this->user_id, $this->name, $this->username);
+    Privilege::updatePassword($this->user_id, $this->password);
+    $this->user_id = $id;
+    $response->content['user'] = $this;
+
+    return $response;
+  }
+
   // $data is an array having the field of username, password
   public function login() {
     $response = $this->verifyInput();
@@ -106,7 +135,7 @@ class User extends Model {
     $statement = self::getDatabase()->prepare('SELECT * FROM user WHERE user_id = :id LIMIT 1');
     $statement->bindValue(':id', $id, \PDO::PARAM_INT);
     $statement->execute();
-    return $statement->fetchAll();
+    return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
   }
 
   // Find one user by username
@@ -117,6 +146,14 @@ class User extends Model {
     $statement->bindValue(':u', $username);
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_CLASS, User::class);
+  }
+
+  protected static function updateUser(int $id, string $name, string $username) {
+    $statement = self::getDatabase()->prepare('UPDATE user SET username = :u, name = :n WHERE user_id = :id');
+    $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+    $statement->bindValue(':u', $username);
+    $statement->bindValue(':n', $name);
+    return $statement->execute();
   }
 
   protected static function deleteUser(int $id) {
