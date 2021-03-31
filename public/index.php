@@ -32,5 +32,7 @@ include_once "$rootDir/routes/admin.php";
 $app->get('/', [MemberController::class, 'home']);
 $app->get('/search', [BaseController::class, 'searchBook']);
 $app->get('/favorite', [BaseController::class, 'favorite']);
+$app->get('/profile', [MemberController::class, 'profile']);
+$app->post('/profile', [MemberController::class, 'profile']);
 
 $app->run();

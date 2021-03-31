@@ -68,7 +68,7 @@ if ($level == BaseController::ADMIN) {
       </div>
       <?php else: ?>
       <div class="d-flex">
-        <a class="btn btn-link mx-2" type="submit" role="button" href="#">
+        <a class="btn btn-link mx-2" type="submit" role="button" href="/profile">
           <?php echo Application::getApp()->getSession()->get('name'); ?>
         </a>
         <a class="btn btn-outline-primary" type="submit" role="button" href="/logout">Logout</a>

@@ -53,6 +53,18 @@ class BaseController extends Controller {
     $response = new Response();
     $body = Request::body();
     if (!empty($body)) {
+      if (isset($body['showPublisher'])) {
+        $response->content['publisher'] = true;
+      }
+  
+      if (isset($body['showYear'])) {
+        $response->content['year'] = true;
+      }
+
+      if (isset($body['showISBN'])) {
+        $response->content['ISBN'] = true;
+      }
+
       $response->content['books'] = Book::search($body);
       self::loadResponseToView($view, $response);
     }

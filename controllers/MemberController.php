@@ -7,7 +7,7 @@ use app\core\Response;
 use app\models\BorrowRecord;
 use app\models\Member;
 use app\models\Reservation;
-use app\utils\Dumpster;
+use app\models\User;
 
 class MemberController extends BaseController {
   // Control /
@@ -119,8 +119,38 @@ class MemberController extends BaseController {
     $view->render();
   }
 
-  // Control /pay
-  // Show the rermaining fine and make a payment
-  public static function pay() {
+  // UPdate profile of all users
+  public static function profile() {
+    $level = self::getSession()->get('level') ?? -1;
+    
+    if ($level < 0) {
+      Response::redirect('/search');
+      return;
+    }
+    
+    $id = self::getSession()->get('id');
+    $old = User::findOneById($id);
+    
+    // Get user by id
+    if (Request::isGet()) {
+      $response = new Response();
+      $response->content['user'] = $old[0] ?? false;
+    }
+
+    if (Request::isPost()) {
+      $user = new User(true);
+      $user->user_id = $id;
+      $response = $user->update($old[0]);
+      if ($response->ok()) {
+        $response->content['user'] = $user;
+        $response->content['success'] = true;
+      } else {
+        $response->content['user'] = $old[0];
+      }
+    }
+
+    $view = self::generateView('profile', 'Profile');
+    self::loadResponseToView($view, $response);
+    $view->render();
   }
 }

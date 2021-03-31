@@ -14,6 +14,10 @@ $viewLink = '';
 if ($level <= BaseController::MEMBER) $viewLink = '/book?isbn=';
 if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 
+$showPublisher = $body['publisher'] ?? false;
+$showYear = $body['year'] ?? false;
+$showISBN = $body['ISBN'] ?? false;
+
 
 ?>
 
@@ -24,8 +28,24 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
   <?php $bookField->render() ?>
   <button class="btn btn-outline-primary" type="submit">Search</button>
 </div>
+
+<div class="mt-3">Show more</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showISBN" type="checkbox" value="publisher" <?php echo $showISBN ? 'checked' : '' ?>>
+  <label class="form-check-label" for="inlineCheckbox2">ISBN</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showPublisher" type="checkbox" value="publisher" <?php echo $showPublisher ? 'checked' : '' ?>>
+  <label class="form-check-label" for="inlineCheckbox2">Publisher</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showYear" type="checkbox" value="year" <?php echo $showYear ? 'checked' : '' ?>>
+  <label class="form-check-label" for="inlineCheckbox3">Year</label>
+</div>
 <?php $form->end(); ?>
 
+
+<div class="mt-3">Search by</div>
 <div id="search-by" class="mb-3">
   <div class="form-check form-check-inline">
     <input class="form-check-input" type="radio" name="by" value="title" checked>
@@ -41,11 +61,18 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 <table class="table table-striped table-hover">
   <thead>
     <tr>
-      <th scope="col">ISBN</th>
+      <?php if ($showISBN) : ?>
+        <th scope="col">ISBN</th>
+      <?php endif; ?>
+
       <th scope="col">Title</th>
       <th scope="col">Author</th>
-      <th scope="col">Publisher</th>
-      <th scope="col">Year</th>
+      <?php if ($showPublisher) : ?>
+        <th scope="col">Publisher</th>
+      <?php endif; ?>
+      <?php if ($showYear) : ?>
+        <th scope="col">Year</th>
+      <?php endif; ?>
       <th scope="col">Quantity</th>
 
       <?php if ($level != BaseController::ADMIN) : ?>
@@ -57,15 +84,23 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
   foreach ($books as $book) :
   ?>
     <tr>
-      <th scope="row"><?php echo $book->isbn; ?></th>
+      <?php if ($showISBN) : ?>
+        <th scope="row"><?php echo $book->isbn; ?></th>
+      <?php endif; ?>
+
       <td><?php echo $book->title; ?></td>
       <td><?php echo $book->author; ?></td>
-      <td><?php echo $book->publisher_name; ?></td>
-      <td><?php echo $book->year; ?></td>
-      <td><?php echo $book->quantity; ?></td>
+      <?php if ($showPublisher) : ?>
+        <td><?php echo $book->publisher_name; ?></td>
+      <?php endif; ?>
+      <?php if ($showYear) : ?>
+        <td><?php echo $book->year; ?></td>
+      <?php endif; ?>
+
+      <td><?php echo $book->total; ?></td>
       <?php if ($level != BaseController::ADMIN) : ?>
         <th>
-        <a class="btn btn btn-outline-success" href="<?php echo $viewLink.$book->isbn ?>" role="button">View</a>
+          <a class="btn btn btn-outline-success" href="<?php echo $viewLink . $book->isbn ?>" role="button">View</a>
         </th>
       <?php endif; ?>
     </tr>
@@ -81,3 +116,4 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       field.placeholder = 'Search by ' + e.target.value + '...';
     })
   </script>
+</table>

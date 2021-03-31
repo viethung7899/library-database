@@ -24,9 +24,12 @@ $librarianRoute->get('/reservation/view', [LibrarianController::class, 'viewRese
 $librarianRoute->get('/reservation/confirm', [LibrarianController::class, 'confirmReservation']);
 $librarianRoute->get('/reservation/delete', [LibrarianController::class, 'deleteReservation']);
 
-
+// Delete
 $librarianRoute->get('/borrow', [LibrarianController::class, 'borrow']);
 $librarianRoute->get('/borrow/add', [LibrarianController::class, 'addBorrow']);
 $librarianRoute->post('/borrow/add', [LibrarianController::class, 'addBorrow']);
 $librarianRoute->get('/borrow/return', [LibrarianController::class, 'returnBook']);
+
+$librarianRoute->get('/deleteAll', [LibrarianController::class, 'deleteAllBooks']);
+$librarianRoute->post('/deleteAll', [LibrarianController::class, 'deleteAllBooks']);
 
