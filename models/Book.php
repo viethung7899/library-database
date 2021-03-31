@@ -54,7 +54,7 @@ class Book extends Model {
   }
 
   public static function getBookByISBN(string $isbn) {
-    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE isbn = :i");
+    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE isbn = :i LIMIT 1");
     $query->bindValue(':i', $isbn);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
@@ -107,8 +107,27 @@ class Book extends Model {
     return $query->fetchAll();
   }
 
+  // Get all books with same title, author and publisher to a book with a ISBN
+  private static function searchByBooksSameTitleAuthorPublisher(string $isbn) {
+    $query = self::getDatabase()->prepare("SELECT b1.isbn, b1.title, b1.author, b1.publisher_id
+      FROM book b1 JOIN book b2 
+      ON b1.title = b2.title AND b1.author = b2.author 
+      AND b1.publisher_id = b2.publisher_id AND b2.isbn = :i");
+    $query->bindValue(':i', $isbn);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
   // Doing the cascade delete for book
   public static function deleteBook(string $isbn) {
-    $query = self::getDatabase()->prepare("DELETE FROM book WHERE isbn = ");
+    $books = self::searchByBooksSameTitleAuthorPublisher($isbn);
+    $query = self::getDatabase()->prepare("DELETE FROM book WHERE isbn = :i");
+    $query->bindValue(':i', $isbn);
+    $query->execute();
+
+    // Should delete book_author_publisher ?
+    if (count($books) == 1) {
+      BookAuthorPublisher::shouldDeleteBookAuthorPublisher($books[0]);
+    }
   }
 }

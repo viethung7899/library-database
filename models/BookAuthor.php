@@ -15,11 +15,10 @@ class BookAuthor extends Model {
     $query->execute();
   }
 
-  // 
   public static function deleteBookAuthor(Book $book) {
     $query = self::getDatabase()->prepare("DELETE from book_author WHERE title = :t AND author = :a");
-    $query->bindValue(':a', $book->title);
-    $query->bindValue(':t', $book->author);
+    $query->bindValue(':t', $book->title);
+    $query->bindValue(':a', $book->author);
     $query->execute();
   }
 }

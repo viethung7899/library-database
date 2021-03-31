@@ -7,6 +7,7 @@ use app\core\Response;
 use app\core\Request;
 use app\core\View;
 use app\models\Book;
+use app\models\Reservation;
 use app\models\User;
 
 // This controller is interacting with the User model
@@ -32,8 +33,10 @@ class BaseController extends Controller {
   }
 
   public static function notFound() {
-    $view = self::generateView('notFound', 'Home');
+    $view = self::generateView('notFound', 'Not found');
+    Response::setStatusCode(404);
     $view->render();
+    exit;
   }
 
   // Only return the response, not the view itself, the view should be handle by its subclass
@@ -85,5 +88,23 @@ class BaseController extends Controller {
     ];
     
     $view->loadParameters($params);
+  }
+
+  // Return book details
+  public static function bookDetail() {
+    $isbn = Request::body()['isbn'];
+
+    // Find books
+    if (!isset($isbn)) self::notFound();
+    $books = Book::getBookByISBN($isbn);
+    if (empty($books)) self::notFound();
+    $response = new Response();
+    $response->content['book'] = $books[0];
+    
+    // Find reservations
+    $r = new Reservation(); $r->isbn = $isbn;
+    $response->content['reservations'] = Reservation::getAllRervations($r);
+
+    return $response;
   }
 }

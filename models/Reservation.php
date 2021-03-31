@@ -18,7 +18,7 @@ class Reservation extends Model {
     }
 
     public static function getAllRervations(Reservation $reservation) {
-        $query = 'SELECT bv.isbn, bv.title, r.user_id, r.`pickupDate` FROM book_view bv 
+        $query = 'SELECT bv.isbn, bv.title, r.user_id, u.name, r.`pickupDate` FROM book_view bv 
         JOIN reservation r 
         ON r.isbn = bv.isbn AND bv.isbn LIKE :isbn AND bv.title LIKE :title
         JOIN user u

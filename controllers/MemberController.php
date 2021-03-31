@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use app\core\Request;
 use app\core\Response;
+use app\models\Book;
 use app\models\Member;
+use app\models\Reservation;
 
 class MemberController extends BaseController {
-  // Member home page
+  // Control /
   public static function home() {
     // Set up redirection
     $redirect = parent::home();
@@ -45,6 +47,7 @@ class MemberController extends BaseController {
     $view->render();
   }
 
+  // Control /register
   public static function register() {
     // Resolve the register POST reequest
     $body = Request::body();
@@ -65,5 +68,32 @@ class MemberController extends BaseController {
 
     // Render the register page
     $view->render();
+  }
+
+  // Control /borrow
+  // Search around all books borrow by a user
+  public static function borrow() {
+
+  }
+
+  // Control /reservation
+  // Search around all books reserved by a user
+  public static function reservation() {
+    
+  }
+
+  // Control /book?isbn=
+  // Getting the books details and show reservation buttons
+  public static function book() {
+    $view = self::generateView('member/book', 'Book Details');
+    $response = self::bookDetail();
+    self::loadResponseToView($view, $response);
+    $view->render();
+  }
+
+  // Control /pay
+  // Show the rermaining fine and make a payment
+  public static function pay() {
+
   }
 }

@@ -47,21 +47,18 @@ $titleField = $form->field('Book title', 'title');
       <th></th>
     </tr>
   </thead>
-  <?php $reservations = $body['reverations'] ?? [];
-        foreach ($reservations as $r) :
-        ?>
+  <?php $reservations = $body['reservations'] ?? [];
+  foreach ($reservations as $r) :
+  ?>
     <tr>
       <th scope="row"><?php echo $r->user_id; ?></th>
       <td><?php echo $r->name; ?></td>
       <td><?php echo $r->isbn; ?></td>
       <td><?php echo $r->title; ?></td>
       <td><?php echo $r->pickupDate; ?></td>
-      <td><?php echo $book->quantity; ?></td>
-      <?php if ($level == BaseController::ADMIN || BaseController::LIBRARIAN) : ?>
-        <th>
-        <a class="btn btn btn-outline-success" href="" role="button">Confirm</a>
-        <a class="btn btn btn-outline-danger" href="" role="button">Delete</a>
-        </th>
-      <?php endif; ?>
+      <th>
+        <a class="btn btn btn-outline-success" href="#" role="button">Confirm</a>
+        <a class="btn btn btn-outline-danger" href="#" role="button">Delete</a>
+      </th>
     </tr>
   <?php endforeach; ?>

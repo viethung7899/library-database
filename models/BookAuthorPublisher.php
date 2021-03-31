@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\core\Model;
+use app\utils\Dumpster;
 use PDO;
 
 class BookAuthorPublisher extends Model {
@@ -16,10 +17,27 @@ class BookAuthorPublisher extends Model {
     $query->execute();
   }
 
-  public static function deleteBookAuthor(Book $book) {
-    $query = self::getDatabase()->prepare("DELETE from book_author WHERE title = :t AND author = :a");
-    $query->bindValue(':a', $book->title);
-    $query->bindValue(':t', $book->author);
+  private static function getAllByBookAuthor(Book $book) {
+    $query = self::getDatabase()->prepare("SELECT * FROM book_author_publisher WHERE title = :t AND author = :a");
+    $query->bindValue(':a', $book->author);
+    $query->bindValue(':t', $book->title);
     $query->execute();
+    return $query->fetchAll();
+  }
+
+  public static function deleteBookAuthorPublisher(Book $book) {
+    $query = self::getDatabase()->prepare("DELETE FROM book_author_publisher WHERE title = :t AND author = :a AND publisher_id = :i");
+    $query->bindValue(':t', $book->title);
+    $query->bindValue(':a', $book->author);
+    $query->bindValue(':i', $book->publisher_id, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  public static function shouldDeleteBookAuthorPublisher(Book $book) {
+    self::deleteBookAuthorPublisher($book);
+    $rows = self::getAllByBookAuthor($book);
+    if (empty($rows)) {
+      BookAuthor::deleteBookAuthor($book);
+    }
   }
 }
