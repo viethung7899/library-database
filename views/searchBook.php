@@ -17,6 +17,7 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 $showPublisher = $body['publisher'] ?? false;
 $showYear = $body['year'] ?? false;
 $showISBN = $body['ISBN'] ?? false;
+$showDup = $body['dup'] ?? false;
 
 
 ?>
@@ -31,16 +32,21 @@ $showISBN = $body['ISBN'] ?? false;
 
 <div class="mt-3">Show more</div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input" name="showISBN" type="checkbox" value="publisher" <?php echo $showISBN ? 'checked' : '' ?>>
+  <input class="form-check-input" name="showISBN" type="checkbox" value="true" <?php echo $showISBN ? 'checked' : '' ?>>
   <label class="form-check-label" for="inlineCheckbox2">ISBN</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input" name="showPublisher" type="checkbox" value="publisher" <?php echo $showPublisher ? 'checked' : '' ?>>
+  <input class="form-check-input" name="showPublisher" type="checkbox" value="true" <?php echo $showPublisher ? 'checked' : '' ?>>
   <label class="form-check-label" for="inlineCheckbox2">Publisher</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input" name="showYear" type="checkbox" value="year" <?php echo $showYear ? 'checked' : '' ?>>
+  <input class="form-check-input" name="showYear" type="checkbox" value="true" <?php echo $showYear ? 'checked' : '' ?>>
   <label class="form-check-label" for="inlineCheckbox3">Year</label>
+</div>
+
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showDup" type="checkbox" value="true" <?php echo $showDup ? 'checked' : '' ?>>
+  <label class="form-check-label" for="inlineCheckbox3">Show duplicates</label>
 </div>
 <?php $form->end(); ?>
 

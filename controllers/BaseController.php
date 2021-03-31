@@ -65,6 +65,10 @@ class BaseController extends Controller {
         $response->content['ISBN'] = true;
       }
 
+      if (isset($body['showDup'])) {
+        $response->content['dup'] = true;
+      }
+
       $response->content['books'] = Book::search($body);
       self::loadResponseToView($view, $response);
     }
