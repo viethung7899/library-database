@@ -72,7 +72,7 @@ class Book extends Model {
 
     // Add or ignore book and author
     BookAuthor::addOrIgnoreBookAuthor($this);
-    
+
     // Add or ignore book_author_publisher
     BookAuthorPublisher::addOrIgnoreBookAuthorPublisher($this);
 
@@ -139,5 +139,15 @@ class Book extends Model {
     $statment->bindValue(':i', $isbn);
     $statment->execute();
     return $statment->fetchColumn();
+  }
+
+  public static function total() {
+    $statement = self::getDatabase()->query('SELECT sum(quantity) FROM book');
+    return $statement->fetchColumn();
+  }
+
+  public static function countIBSN() {
+    $statement = self::getDatabase()->query('SELECT count(*) FROM book');
+    return $statement->fetchColumn();
   }
 }

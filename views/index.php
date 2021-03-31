@@ -10,13 +10,13 @@ $id = Application::getApp()->getSession()->get('id');
 $rcount = Reservation::countByUserId($id);
 $rcountOverdue = Reservation::countByUserId($id, true);
 
-$brCount = BorrowRecord::countByUserId(($id));
+$brCount = BorrowRecord::countByUserId($id);
 $brCountOverdue = BorrowRecord::countByUserId($id, true);
 
 ?>
 <h1 class="my-5">Hello <?php echo $name ?></h1>
 
-<h2>Summary</h2>
+<h2 class="my-4">Summary</h2>
 
 <table class="table table-bordered">
   <tbody>
