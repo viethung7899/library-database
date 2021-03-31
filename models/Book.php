@@ -35,18 +35,20 @@ class Book extends Model {
   }
 
   // Search by book name with all information
-  public static function searchBooksByName(string $title) {
+  public static function searchBooksByName(string $title, array $attr = []) {
     $keyword = "%$title%";
-    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE title LIKE :k");
+    $project = (empty($attr)) ? '*' : implode(',', $attr);
+    $query = self::getDatabase()->prepare("SELECT $project FROM book_view WHERE title LIKE :k");
     $query->bindValue(':k', $keyword);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
   }
 
   // Search by book name with all information
-  public static function searchBooksByAuthor(string $author) {
+  public static function searchBooksByAuthor(string $author, array $attr = []) {
     $keyword = "%$author%";
-    $query = self::getDatabase()->prepare("SELECT * FROM book_view WHERE author LIKE :k");
+    $project = (empty($attr)) ? '*' : implode(',', $attr);
+    $query = self::getDatabase()->prepare("SELECT $project FROM book_view WHERE author LIKE :k");
     $query->bindValue(':k', $keyword);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
@@ -85,10 +87,20 @@ class Book extends Model {
 
   // Search books based on input
   public static function search(array $input) {
+    // Get all shown attrubite
+    $attrs = ['isbn', 'title', 'author', 'quantity'];
+    if (isset($input['showPublisher'])) {
+      $attrs[] = 'publisher_name';
+    }
+
+    if (isset($input['showYear'])) {
+      $attrs[] = 'year';
+    }
+
     if (isset($input['title'])) {
-      return self::searchBooksByName($input['title']);
+      return self::searchBooksByName($input['title'], $attrs);
     } else if (isset($input['author'])) {
-      return self::searchBooksByAuthor($input['author']);
+      return self::searchBooksByAuthor($input['author'], $attrs);
     }
     return [];
   }

@@ -14,6 +14,9 @@ $viewLink = '';
 if ($level <= BaseController::MEMBER) $viewLink = '/book?isbn=';
 if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
 
+$showPublisher = $body['publisher'] ?? false;
+$showYear = $body['year'] ?? false;
+
 
 ?>
 
@@ -24,8 +27,19 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
   <?php $bookField->render() ?>
   <button class="btn btn-outline-primary" type="submit">Search</button>
 </div>
+
+<div class="me-3">Show more</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showPublisher" type="checkbox" value="publisher">
+  <label class="form-check-label" for="inlineCheckbox2">Publisher</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" name="showYear" type="checkbox" value="year">
+  <label class="form-check-label" for="inlineCheckbox3">Year</label>
+</div>
 <?php $form->end(); ?>
 
+Search by
 <div id="search-by" class="mb-3">
   <div class="form-check form-check-inline">
     <input class="form-check-input" type="radio" name="by" value="title" checked>
@@ -44,8 +58,12 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       <th scope="col">ISBN</th>
       <th scope="col">Title</th>
       <th scope="col">Author</th>
-      <th scope="col">Publisher</th>
-      <th scope="col">Year</th>
+      <?php if ($showPublisher) : ?>
+        <th scope="col">Publisher</th>
+      <?php endif; ?>
+      <?php if ($showYear) : ?>
+        <th scope="col">Year</th>
+      <?php endif; ?>
       <th scope="col">Quantity</th>
 
       <?php if ($level != BaseController::ADMIN) : ?>
@@ -60,12 +78,17 @@ if ($level === BaseController::LIBRARIAN) $viewLink = '/library/book?isbn=';
       <th scope="row"><?php echo $book->isbn; ?></th>
       <td><?php echo $book->title; ?></td>
       <td><?php echo $book->author; ?></td>
-      <td><?php echo $book->publisher_name; ?></td>
-      <td><?php echo $book->year; ?></td>
+      <?php if ($showPublisher) : ?>
+        <td><?php echo $book->publisher_name; ?></td>
+      <?php endif; ?>
+      <?php if ($showYear) : ?>
+        <td><?php echo $book->year; ?></td>
+      <?php endif; ?>
+
       <td><?php echo $book->quantity; ?></td>
       <?php if ($level != BaseController::ADMIN) : ?>
         <th>
-        <a class="btn btn btn-outline-success" href="<?php echo $viewLink.$book->isbn ?>" role="button">View</a>
+          <a class="btn btn btn-outline-success" href="<?php echo $viewLink . $book->isbn ?>" role="button">View</a>
         </th>
       <?php endif; ?>
     </tr>
