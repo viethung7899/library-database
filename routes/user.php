@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\BaseController;
+use app\controllers\LibrarianController;
 use app\controllers\MemberController;
 use app\core\Router;
 
@@ -18,7 +19,7 @@ $memberRoute->get('/borrow', [MemberController::class, 'borrow']);
 $memberRoute->get('/reservation', [MemberController::class, 'reservation']);
 
 $memberRoute->post('/reservation/confirm', [MemberController::class, 'makeReservation']);
-$memberRoute->post('/reservation/cancel', [MemberController::class, 'cancelReservation']);
+$memberRoute->get('/reservation/cancel', [LibrarianController::class, 'deleteReservation']);
 
 
 $memberRoute->get('/book', [MemberController::class, 'book']);

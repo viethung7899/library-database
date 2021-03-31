@@ -21,7 +21,7 @@ $librarianRoute->post('/book/delete', [LibrarianController::class, 'deleteBook']
 // Reservation
 $librarianRoute->get('/reservation', [LibrarianController::class, 'reservation']);
 $librarianRoute->get('/reservation/view', [LibrarianController::class, 'viewReservation']);
-$librarianRoute->post('/reservation/confirm', [LibrarianController::class, 'confirmReservation']);
+$librarianRoute->get('/reservation/confirm', [LibrarianController::class, 'confirmReservation']);
 $librarianRoute->get('/reservation/delete', [LibrarianController::class, 'deleteReservation']);
 
 

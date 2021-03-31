@@ -78,7 +78,7 @@ class BorrowRecord extends Model {
   public static function getRecordsByIdAndISBN(string $isbn, int $id = -1) {
     $matchISBN = empty($isbn) ? '1' : 'isbn = :isbn';
     $matchId = ($id < 0) ? '1' : 'user_id = :id';
-    $statement = self::getDatabase()->prepare("SELECT * FROM borrow_record WHERE $matchISBN AND $matchId");
+    $statement = self::getDatabase()->prepare("SELECT * FROM borrow_record WHERE $matchISBN AND $matchId AND returned = 'N'");
     if (!empty($isbn)) $statement->bindValue(':isbn', $isbn);
     if ($id > 0) $statement->bindValue(':id', $id);
     $statement->execute();
@@ -95,6 +95,7 @@ class BorrowRecord extends Model {
 
     $before = '1';
     $after = '1';
+    $matchId = '1';
     if (!empty($record->before)) {
       $before = 'r.`returnDate` <= :before';
     }
@@ -103,21 +104,25 @@ class BorrowRecord extends Model {
       $after = 'r.`returnDate` >= :after';
     }
 
-    $query = $query . " WHERE $before AND $after AND r.returned = 'N'";
+    if (isset($record->user_id) && !empty($record->user_id)) {
+      $matchId = 'u.user_id = :id';
+    }
+
+    $query = $query . " WHERE $before AND $after AND $matchId AND r.returned = 'N'";
 
 
     $statement = self::getDatabase()->prepare($query);
     $statement->bindValue(':isbn', '%' . $record->isbn . '%');
     $statement->bindValue(':title', '%' . $record->title . '%');
     $statement->bindValue(':name', '%' . $record->name . '%');
-    if (isset($record->user_id) && !empty($record->user_id)) $statement->bindValue(':id', $record->user_id);
+    if ((isset($record->user_id) && !empty($record->user_id))) $statement->bindValue(':id', $record->user_id);
     if (!empty($record->before))
       $statement->bindValue(':before', $record->before);
     if (!empty($record->after))
       $statement->bindValue(':after', $record->after);
 
     if (isset($record->user_id) && !empty($record->user_id)) {
-      $statement->bindValue(':name', $record->user_id, \PDO::PARAM_INT);
+      $statement->bindValue(':id', $record->user_id, \PDO::PARAM_INT);
     }
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);

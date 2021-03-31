@@ -9,10 +9,10 @@
 - [x] Log out
 - [ ] Update member info
 - [x] Search for books
-- [ ] Add books to make reservation
-- [ ] Show all books for reservation
-- [ ] Cancel reservation
-- [ ] Show borrowed books
+- [x] Add books to make reservation
+- [x] Show all books for reservation
+- [x] Cancel reservation
+- [x] Show borrowed books
 
 ### Librarians
 

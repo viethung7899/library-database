@@ -83,13 +83,13 @@ class LibrarianController extends BaseController {
   // Control /library/reservation/view?user_id=&
   public static function viewReservation() {
     $view = self::generateView('library/reservationView', 'Reservation Detail');
-    
+
     // Verification
     $body = Request::body();
     $id = $body['user_id'] ?? '';
     $isbn = $body['isbn'] ?? '';
     if (empty($id) || empty($isbn)) self::notFound();
-    
+
     // Find one reservation
     $reservations = Reservation::getOneReservation($id, $isbn);
     if (empty($reservations)) self::notFound();
@@ -111,14 +111,27 @@ class LibrarianController extends BaseController {
 
   // Control /library/reservation/confirm
   public static function confirmReservation() {
-    Dumpster::dumpAll(Request::body());
+    $body = Request::body();
+    $id = $body['user_id'];
+    $isbn = $body['isbn'];
+
+    // Add 3 days to return dates
+    $returnDate = date('Y-m-d', strtotime(date('Y-m-d') . ' + 3 days'));
+
+    // Remove reservation
+    Reservation::deleteReservation($id, $isbn);
+
+    // Add borrow record
+    BorrowRecord::addBorrowRecord($id, $isbn, $returnDate);
+
+    Response::redirect('/library/reservation');
   }
 
   // Control /library/reservation/delete
   public static function deleteReservation() {
     $body = Request::body();
     Reservation::deleteReservation($body['user_id'], $body['isbn']);
-    Response::redirect('/search');
+    Response::redirect('/search?title=');
   }
 
   // Control /library/borrow/add
@@ -162,7 +175,6 @@ class LibrarianController extends BaseController {
   // Control /library/return
   public static function returnBook() {
     $body = Request::body();
-    Dumpster::dump($body);
     $id = $body['id'];
     BorrowRecord::deleteBorrowRecord($id);
     Response::redirect('/library/borrow?isbn=&title=&user_id=&name=&before=&after=');

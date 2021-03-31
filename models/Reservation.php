@@ -49,7 +49,7 @@ class Reservation extends Model {
         $statement->bindValue(':name', '%'.$reservation->name.'%');
         
         if (isset($reservation->user_id) && !empty($reservation->user_id)) {
-            $statement->bindValue(':name', $reservation->id, \PDO::PARAM_INT);
+            $statement->bindValue(':id', $reservation->user_id, \PDO::PARAM_INT);
         }
 
         $statement->execute();

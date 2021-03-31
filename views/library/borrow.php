@@ -77,3 +77,7 @@ $afterField = $form->field('Return date after', 'after');
     </tr>
   <?php endforeach; ?>
 </table>
+
+<?php if (count($records) <= 0): ?>
+  <p class="text-center">No results</p>
+<?php endif; ?>

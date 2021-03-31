@@ -63,3 +63,8 @@ $titleField = $form->field('Book title', 'title');
       </th>
     </tr>
   <?php endforeach; ?>
+</table>
+
+<?php if (count($reservations) <= 0): ?>
+  <p class="text-center">No results</p>
+<?php endif; ?>
