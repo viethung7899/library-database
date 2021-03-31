@@ -127,4 +127,10 @@ class User extends Model {
     }
     return -1;
   }
+
+  // Count the number of users
+  public static function count() {
+    $statement = self::getDatabase()->query("SELECT count(*) FROM user");
+    return $statement->fetchColumn();
+  }
 }

@@ -26,7 +26,7 @@ class Reservation extends Model {
         $statement = self::getDatabase()->prepare($query);
         $statement->bindValue(':id', $user_id, \PDO::PARAM_INT);
         $statement->bindValue(':isbn', $isbn);
-        
+
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
@@ -40,14 +40,14 @@ class Reservation extends Model {
 
         // Check if the user_id is set
         if (isset($reservation->user_id) && !empty($reservation->user_id)) {
-            $query = $query.' AND u.user_id = :id';
+            $query = $query . ' AND u.user_id = :id';
         }
 
         $statement = self::getDatabase()->prepare($query);
-        $statement->bindValue(':isbn', '%'.$reservation->isbn.'%');
-        $statement->bindValue(':title', '%'.$reservation->title.'%');
-        $statement->bindValue(':name', '%'.$reservation->name.'%');
-        
+        $statement->bindValue(':isbn', '%' . $reservation->isbn . '%');
+        $statement->bindValue(':title', '%' . $reservation->title . '%');
+        $statement->bindValue(':name', '%' . $reservation->name . '%');
+
         if (isset($reservation->user_id) && !empty($reservation->user_id)) {
             $statement->bindValue(':id', $reservation->user_id, \PDO::PARAM_INT);
         }
@@ -77,5 +77,14 @@ class Reservation extends Model {
         $statement->bindValue(':isbn', $isbn);
         return $statement->execute();
     }
+
+    // Count the number of users
+    public static function countByUserId(int $id = -1, bool $overdue = false) {
+        $matchId = ($id <= 0) ? '1': 'user_id = :id';
+        $overdueOnly = $overdue ? '`pickupDate` < CURRENT_DATE' : '1';
+        $statement = self::getDatabase()->prepare("SELECT count(*) FROM reservation WHERE $matchId AND $overdueOnly");
+        if ($id > 0) $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchColumn();
+    }
 }
-?>

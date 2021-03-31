@@ -58,4 +58,10 @@ class Employee extends User {
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_CLASS, Employee::class);
   }
+  
+  // Count the number of employees
+  public static function count() {
+    $statement = self::getDatabase()->query("SELECT count(*) FROM library_staff");
+    return $statement->fetchColumn();
+  }
 }
