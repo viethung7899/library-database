@@ -35,7 +35,7 @@ class Book extends Model {
     if ($load) $this->loadDataFromRequest();
   }
 
-  // Search by book name with all information
+  // Search by book name with all information, no
   public static function searchBooksByName(string $title, array $attr = []) {
     $project = (empty($attr)) ? '*' : implode(',', $attr);
     $query = self::getDatabase()->prepare("SELECT $project, sum(quantity) as total FROM book_view WHERE title LIKE :k GROUP BY $project");
@@ -50,6 +50,26 @@ class Book extends Model {
     $keyword = "%$author%";
     $project = (empty($attr)) ? '*' : implode(',', $attr);
     $query = self::getDatabase()->prepare("SELECT $project, sum(quantity) as total FROM book_view WHERE author LIKE :k GROUP BY $project");
+    $query->bindValue(':k', $keyword);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
+  // Search by book name with all information
+  public static function searchBooksByNameWithDuplicate(string $title, array $attr = []) {
+    $project = (empty($attr)) ? '*' : implode(',', $attr);
+    $query = self::getDatabase()->prepare("SELECT $project, quantity as total FROM book_view WHERE title LIKE :k");
+    $keyword = "%$title%";
+    $query->bindValue(':k', $keyword);
+    $query->execute();
+    return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
+  }
+
+  // Search by book name with all information
+  public static function searchBooksByAuthorWithDuplicate(string $author, array $attr = []) {
+    $keyword = "%$author%";
+    $project = (empty($attr)) ? '*' : implode(',', $attr);
+    $query = self::getDatabase()->prepare("SELECT $project, quantity as total FROM book_view WHERE author LIKE :k");
     $query->bindValue(':k', $keyword);
     $query->execute();
     return $query->fetchAll(\PDO::FETCH_CLASS, self::class);
@@ -102,9 +122,13 @@ class Book extends Model {
       $attrs[] = 'year';
     }
 
+    $showDup = isset($input['showDup']);
+
     if (isset($input['title'])) {
+      if ($showDup) return self::searchBooksByNameWithDuplicate($input['title'], $attrs);
       return self::searchBooksByName($input['title'], $attrs);
     } else if (isset($input['author'])) {
+      if ($showDup) return self::searchBooksByAuthorWithDuplicate($input['title'], $attrs);
       return self::searchBooksByAuthor($input['author'], $attrs);
     }
     return [];
