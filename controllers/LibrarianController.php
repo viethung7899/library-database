@@ -48,6 +48,11 @@ class LibrarianController extends BaseController {
   }
 
   public static function addBook() {
+    $view = self::generateView('librarian/addBook', 'Add new book');
+    $book = new Book();
+    $response = $book->add();
+    self::loadResponseToView($view, $response);
+    $view->render();
   }
 
   public static function editBook() {
