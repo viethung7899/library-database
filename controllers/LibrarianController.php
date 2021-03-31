@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Request;
 use app\core\Response;
 use app\models\Book;
+use app\models\BookAuthor;
 use app\models\BorrowRecord;
 use app\models\Category;
 use app\models\Reservation;
@@ -178,5 +179,18 @@ class LibrarianController extends BaseController {
     $id = $body['id'];
     BorrowRecord::deleteBorrowRecord($id);
     Response::redirect('/library/borrow?isbn=&title=&user_id=&name=&before=&after=');
+  }
+
+  // Control /library/deleteAll
+  public static function deleteAllBooks() {
+    $view = self::generateView('/library/deleteAll', 'Delete all books');
+    $response = new Response();
+    $body = Request::body();
+    if (!empty($body)) {
+      BookAuthor::deleteAllBooks($body);
+      $response->content['success'] = true;
+      self::loadResponseToView($view, $response);
+    }
+    $view->render();
   }
 }

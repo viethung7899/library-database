@@ -104,3 +104,4 @@ Search by
       field.placeholder = 'Search by ' + e.target.value + '...';
     })
   </script>
+</table>
