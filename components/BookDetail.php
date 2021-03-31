@@ -2,9 +2,10 @@
 
 $book = $body['book'];
 $reservations = $body['reservations'];
+$records = $body['records'];
 
 $rc = count($reservations);
-$bc = 0;
+$bc = count($records);
 $av = $book->quantity - $rc - $bc;
 
 ?>

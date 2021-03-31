@@ -8,27 +8,24 @@
 - [x] Log in
 - [x] Log out
 - [ ] Update member info
-- [ ] Search for books
-- [ ] Add books to make reservation
-- [ ] Show all books for reservation
-- [ ] Cancel reservation
-- [ ] Show borrowed books
-- [ ] Pay fines
-- [ ] Request for membership cancellation (only if they pay all the fines)
+- [x] Search for books
+- [x] Add books to make reservation
+- [x] Show all books for reservation
+- [x] Cancel reservation
+- [x] Show borrowed books
 
 ### Librarians
 
 - [x] Log in
 - [x] Log out
-- [ ] Add books
-- [ ] Remove books
-- [ ] Search books
+- [x] Add books
+- [x] Remove books
+- [x] Search books
 - [ ] Modify books' info
-- [ ] Show all reservation requests (pick up date is today)
-- [ ] Add record
-- [ ] Remove record
+- [x] Show all reservation requests
+- [x] Add record
+- [x] Remove record
 - [ ] Total of borrowed book
-- [ ] Total of (un)paid fines
 
 ### Admin
 
@@ -40,8 +37,11 @@
 
 ## Optional features
 
+- [ ] Request for membership cancellation (only if they pay all the fines)
 - [ ] Delete inactive members
 - [ ] Notify when the return date approaches
+- [ ] Pay fines
+- [ ] Total of (un)paid fines
 
 ## App flow
 
@@ -60,7 +60,7 @@ Member goes to library to pick up at pickup date
 
 If member don't show up at the pick up date
 
-- Delete the reservation record (automatically)
+- Delete the reservation record (automatically - maybe?)
 
 **For borrowing**
 Librarian add borrowing book record

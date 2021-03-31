@@ -17,7 +17,21 @@ class Reservation extends Model {
         if ($load) $this->loadDataFromRequest();
     }
 
-    public static function getAllRervations(Reservation $reservation) {
+    public static function getOneReservation(int $user_id, string $isbn) {
+        $query = 'SELECT bv.isbn, bv.title, r.user_id, u.name, r.`pickupDate` FROM book_view bv 
+        JOIN reservation r 
+        ON r.isbn = bv.isbn AND r.isbn = :isbn
+        JOIN user u
+        ON u.user_id = r.user_id AND u.user_id = :id';
+        $statement = self::getDatabase()->prepare($query);
+        $statement->bindValue(':id', $user_id, \PDO::PARAM_INT);
+        $statement->bindValue(':isbn', $isbn);
+        
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
+    }
+
+    public static function getAllReservations(Reservation $reservation) {
         $query = 'SELECT bv.isbn, bv.title, r.user_id, u.name, r.`pickupDate` FROM book_view bv 
         JOIN reservation r 
         ON r.isbn = bv.isbn AND bv.isbn LIKE :isbn AND bv.title LIKE :title
@@ -35,9 +49,16 @@ class Reservation extends Model {
         $statement->bindValue(':name', '%'.$reservation->name.'%');
         
         if (isset($reservation->user_id) && !empty($reservation->user_id)) {
-            $statement->bindValue(':name', $reservation->id, \PDO::PARAM_INT);
+            $statement->bindValue(':id', $reservation->user_id, \PDO::PARAM_INT);
         }
 
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
+    }
+
+    public static function getAllReservationsByISBN(string $isbn) {
+        $statement = self::getDatabase()->prepare('SELECT * FROM reservation WHERE isbn = :isbn');
+        $statement->bindValue(':isbn', $isbn);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
@@ -47,6 +68,13 @@ class Reservation extends Model {
         $statement->bindValue(':id', $user_id);
         $statement->bindValue(':isbn', $isbn);
         $statement->bindValue(':pickup', $pickup_date);
+        return $statement->execute();
+    }
+
+    public static function deleteReservation(string $user_id, string $isbn) {
+        $statement = self::getDatabase()->prepare("DELETE FROM reservation WHERE user_id = :id AND isbn = :isbn");
+        $statement->bindValue(':id', $user_id);
+        $statement->bindValue(':isbn', $isbn);
         return $statement->execute();
     }
 }

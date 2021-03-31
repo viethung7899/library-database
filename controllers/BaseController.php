@@ -7,6 +7,7 @@ use app\core\Response;
 use app\core\Request;
 use app\core\View;
 use app\models\Book;
+use app\models\BorrowRecord;
 use app\models\Reservation;
 use app\models\User;
 
@@ -86,7 +87,7 @@ class BaseController extends Controller {
       'body' => $response->content,
       'errors' => $response->errors
     ];
-    
+
     $view->loadParameters($params);
   }
 
@@ -100,10 +101,10 @@ class BaseController extends Controller {
     if (empty($books)) self::notFound();
     $response = new Response();
     $response->content['book'] = $books[0];
-    
+
     // Find reservations
-    $r = new Reservation(); $r->isbn = $isbn;
-    $response->content['reservations'] = Reservation::getAllRervations($r);
+    $response->content['reservations'] = Reservation::getAllReservationsByISBN($isbn);
+    $response->content['records'] = BorrowRecord::getRecordsByIdAndISBN($isbn);
 
     return $response;
   }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,11 +11,13 @@
 
   <title><?php echo $title; ?></title>
 </head>
+
 <body>
   <?php
-  
+
   use app\core\Application;
-  include_once Application::getRootDir().'/components/_navbar.php';
+
+  include_once Application::getRootDir() . '/components/_navbar.php';
 
   ?>
   <!-- This is the content -->
@@ -24,5 +27,17 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <!-- Date picker -->
+  <script>
+    $(function() {
+      $("#datepicker").datepicker();
+    });
+  </script>
 </body>
+
 </html>

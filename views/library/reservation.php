@@ -57,8 +57,14 @@ $titleField = $form->field('Book title', 'title');
       <td><?php echo $r->title; ?></td>
       <td><?php echo $r->pickupDate; ?></td>
       <th>
-        <a class="btn btn btn-outline-success" href="#" role="button">Confirm</a>
-        <a class="btn btn btn-outline-danger" href="#" role="button">Delete</a>
+        <a class="btn btn btn-outline-success" 
+        href="<?php echo sprintf('/library/reservation/view?user_id=%d&isbn=%s', $r->user_id, $r->isbn) ?>"
+        role="button">View</a>
       </th>
     </tr>
   <?php endforeach; ?>
+</table>
+
+<?php if (count($reservations) <= 0): ?>
+  <p class="text-center">No results</p>
+<?php endif; ?>
