@@ -1,9 +1,17 @@
 {
-    "name": "nguyenviethung/login-test",
+    "name": "nguyenviethung/library-database",
     "authors": [
         {
             "name": "Viet Hung Nguyen",
             "email": "vnguyen48@mylangara.ca"
+        },
+        {
+            "name": "Usman Tung",
+            "email": "ytung01@mylangara.ca"
+        },
+        {
+            "name": "Soyeon Lee",
+            "email": "slee124@mylangara.ca"
         }
     ],
     "require": {
