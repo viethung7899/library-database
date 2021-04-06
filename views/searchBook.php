@@ -106,7 +106,7 @@ $showDup = $body['dup'] ?? false;
       <td><?php echo $book->total; ?></td>
       <?php if ($level != BaseController::ADMIN) : ?>
         <th>
-          <a class="btn btn btn-outline-success" href="<?php echo $viewLink . $book->isbn ?>" role="button">View</a>
+          <a class="btn btn btn-outline-success <?php echo isset($book->isbn) ? '' : 'disabled'?>" href="<?php echo $viewLink . $book->isbn ?>" role="button">View</a>
         </th>
       <?php endif; ?>
     </tr>

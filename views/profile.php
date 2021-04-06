@@ -13,7 +13,7 @@ $passwordField = $form->field('Password', 'password', true, Field::PASSWORD);
 
 ?>
 
-<h1 class="my-5">Become new member</h1>
+<h1 class="my-5">Profile</h1>
 
 <?php $form->begin(); ?>
 <div class="mb-3">

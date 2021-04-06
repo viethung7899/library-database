@@ -128,7 +128,7 @@ class Book extends Model {
       if ($showDup) return self::searchBooksByNameWithDuplicate($input['title'], $attrs);
       return self::searchBooksByName($input['title'], $attrs);
     } else if (isset($input['author'])) {
-      if ($showDup) return self::searchBooksByAuthorWithDuplicate($input['title'], $attrs);
+      if ($showDup) return self::searchBooksByAuthorWithDuplicate($input['author'], $attrs);
       return self::searchBooksByAuthor($input['author'], $attrs);
     }
     return [];
